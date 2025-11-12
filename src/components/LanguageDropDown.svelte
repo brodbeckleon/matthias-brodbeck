@@ -34,12 +34,10 @@
 
 	{#if showLangDropdown}
 		<div class="language-dropdown-menu">
-			{#each availableLocales as lang}
-				{#key lang}
-					<button class="dropdown-item" onclick={() => changeLanguage(lang)}>
-						{availableLocaleNames[lang]}
-					</button>
-				{/key}
+			{#each availableLocales as lang (lang)}
+				<button class="dropdown-item" onclick={() => changeLanguage(lang)}>
+					{availableLocaleNames[lang]}
+				</button>
 			{/each}
 		</div>
 	{/if}

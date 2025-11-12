@@ -23,17 +23,19 @@
 	<!-- Top Row -->
 	<div class="top-row">
 		<div class="social-icons">
-			{#each socialLinks as { icon, href }}
+			{#each socialLinks as { icon, href } (href)}
 				<a {href} target="_blank" rel="noopener noreferrer" class="icon-link">
 					<svelte:component this={icon} />
 				</a>
 			{/each}
 		</div>
 
-		<div class="title-row">
-			<div class="title">Matthias Brodbeck</div>
-			<div class="tagline">{m.drums_and_percussion()}</div>
-		</div>
+		<a href={'/'} class="title-link" aria-label="Homepage">
+			<div class="title-row">
+				<div class="title">Matthias Brodbeck</div>
+				<div class="tagline">{m.drums_and_percussion()}</div>
+			</div>
+		</a>
 
 		<div class="settings">
 			<ThemeToggler />
@@ -43,8 +45,15 @@
 	<!-- Bottom Row -->
 
 	<div class="nav-links">
-		{#each navLinks as { name, href }}
+		{#each navLinks as { name, href } (href)}
 			<a {href}>{name}</a>
 		{/each}
 	</div>
 </nav>
+
+<style>
+	.title-link {
+		text-decoration: none;
+		color: inherit;
+	}
+</style>

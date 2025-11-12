@@ -12,5 +12,31 @@
 </svelte:head>
 
 <Navigation />
+<div class="container">
+	{@render children()}
+</div>
 
-{@render children()}
+<style>
+	.container {
+		margin: 0 auto;
+		width: 50vw;
+	}
+
+	@media (max-width: 599px) {
+		.container {
+			width: 95vw;
+		}
+	}
+
+	@media (min-width: 600px) {
+		.container {
+			width: 90vw;
+		}
+	}
+
+	@media (min-width: 900px) {
+		.container {
+			width: 70vw;
+		}
+	}
+</style>
