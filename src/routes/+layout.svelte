@@ -16,7 +16,7 @@
 	{@render children()}
 </div>
 
-<style>
+<style lang="css">
 	.container {
 		margin: 0 auto;
 		width: 50vw;
@@ -37,6 +37,12 @@
 	@media (min-width: 900px) {
 		.container {
 			width: 70vw;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.container {
+			width: 50vw;
 		}
 	}
 </style>

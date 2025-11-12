@@ -28,3 +28,17 @@
 		<Moon />
 	{/if}
 </button>
+
+<style lang="css">
+	.theme-toggle {
+		background: none;
+		border: none;
+		color: var(--text);
+		cursor: pointer;
+		transition: transform 0.2s;
+	}
+
+	.theme-toggle:hover {
+		transform: scale(1.15);
+	}
+</style>
