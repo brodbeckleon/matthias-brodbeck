@@ -8,6 +8,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
+    <meta name="theme-color" content="#111" />
 </svelte:head>
 
 <Navigation/>

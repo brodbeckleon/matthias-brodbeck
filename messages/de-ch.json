@@ -1,5 +1,15 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from de-ch!",
-    "drummer_and_teacher": "Schlagzeuger & Lehrer"
+    "mattias_brodbeck": "Matthias Brodbeck",
+    "drums_and_percussion": "Schlagzeug & Percussion",
+    "home": "Startseite",
+    "events": "Auftritte",
+    "music": "Musik",
+    "contact": "Kontakt",
+    "gallery": "Galerie",
+    "cv_1": "Matthias Brodbeck wurde 1971 geboren. Im Alter von 13 Jahren begann er seinen ersten Schlagzeugunterricht bei Jean-Claude Forestier vom Basler Sinfonieorchester. Von 1992 bis 1996 studierte er an der Hochschule Luzern bei Marc Halbheer und Pierre Favre. Weitere Studien bei Billy Brooks und Louis César Ewandé.",
+    "cv_2": "Matthias Brodbeck war Mitglied der experimentellen Rapgruppe «P-27», Andy Scherrers «Chapter 12» und des Percussion-Trios «Metrix».",
+    "cv_3": "Als vielseitiger Schlagzeuger und Perkussionist arbeitete er unter anderem mit Eddie Floyd (Blues Brothers), William Bell, Ruby Wilson, dem Basler Percussion-Ensemble unter der Leitung von Dr. Paul Sacher, Lionel Hampton, Gerry Hemingway, Andy Scherrer, Fritz Hauser, Jean-Paul Brodbeck, Wolfgang Zwiauer, Domenic Landolf, Thomas Möckel, Hans Feigenwinter, Dieter Ammann und dem Musical „Keep Cool“ zusammengearbeitet.",
+    "cv_4": "Derzeit ist er Mitglied von «The Stone Alphabet» und dem Weltmusik-Quartett «Saitenschlag».",
+    "cv_5": "Matthias Brodbeck lebt in Zürich und arbeitet als freischaffender Musiker und Pädagoge."
 }

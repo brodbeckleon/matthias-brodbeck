@@ -2,12 +2,14 @@
     import { Facebook, Instagram, Youtube } from '@lucide/svelte';
     import { m } from '$lib/paraglide/messages.js';
     import LanguageDropDown from "./LanguageDropDown.svelte";
+    import ThemeToggler from "./ThemeToggler.svelte";
 
     const navLinks = [
-        { name: 'Home', href: '/' },
-        { name: 'Upcoming Events', href: '/events' },
-        { name: 'Music', href: '/music' },
-        { name: 'Contact', href: '/contact' }
+        { name: m.home(), href: '/' },
+        { name: m.events(), href: '/events' },
+        { name: m.music(), href: '/music' },
+        { name: m.gallery(), href: '/gallery' },
+        { name: m.contact(), href: '/contact' }
     ];
 
     const socialLinks = [
@@ -30,11 +32,13 @@
 
         <div class="title-row">
             <div class="title">Matthias Brodbeck</div>
-            <div class="tagline">{m.drummer_and_teacher()}</div>
+            <div class="tagline">{m.drums_and_percussion()}</div>
         </div>
 
-        <!-- Language Dropdown -->
-        <LanguageDropDown/>
+        <div class="settings">
+            <ThemeToggler/>
+            <LanguageDropDown/>
+        </div>
     </div>
     <!-- Bottom Row -->
 
