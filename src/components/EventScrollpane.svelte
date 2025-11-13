@@ -20,15 +20,15 @@
 		];
 	}
 	let listContainerEl: HTMLElement;
-	let scrollTop = $state(0);
+	let scrollLeft = $state(0);
 	let ITEM_SPACING = 0;
-	const scrollIndex = $derived(scrollTop / ITEM_SPACING);
+	const scrollIndex = $derived(scrollLeft / ITEM_SPACING);
 
 	onMount(() => {
 		if (listContainerEl && listContainerEl.children.length > 1) {
 			const first = listContainerEl.children[0] as HTMLElement;
 			const second = listContainerEl.children[1] as HTMLElement;
-			ITEM_SPACING = second.offsetTop - first.offsetTop;
+			ITEM_SPACING = second.offsetLeft - first.offsetLeft;
 		}
 		scrollToToday();
 	});
@@ -42,25 +42,25 @@
 	function scrollToToday() {
 		if (!listContainerEl) return;
 		const targetIndex = findNextEventIndex();
-		const targetScrollTop = targetIndex * ITEM_SPACING;
-		listContainerEl.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+		const targetScrollLeft = targetIndex * ITEM_SPACING;
+		listContainerEl.scrollTo({ left: targetScrollLeft, behavior: 'smooth' });
 	}
 
-	function scrollUp() {
+	function scrollPrev() {
 		if (!listContainerEl) return;
 		const currentIndex = Math.round(scrollIndex);
-		const newScrollTop = Math.max(0, (currentIndex - 1) * ITEM_SPACING);
-		listContainerEl.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+		const newScrollLeft = Math.max(0, (currentIndex - 1) * ITEM_SPACING);
+		listContainerEl.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
 	}
 
-	function scrollDown() {
+	function scrollNext() {
 		if (!listContainerEl) return;
 		const currentIndex = Math.round(scrollIndex);
-		const newScrollTop = Math.min(
+		const newScrollLeft = Math.min(
 			(events.length - 1) * ITEM_SPACING,
 			(currentIndex + 1) * ITEM_SPACING
 		);
-		listContainerEl.scrollTo({ top: newScrollTop, behavior: 'smooth' });
+		listContainerEl.scrollTo({ left: newScrollLeft, behavior: 'smooth' });
 	}
 </script>
 
@@ -68,7 +68,7 @@
 	<div
 		class="list-container"
 		bind:this={listContainerEl}
-		onscroll={(e) => (scrollTop = e.currentTarget.scrollTop)}
+		onscroll={(e) => (scrollLeft = e.currentTarget.scrollLeft)}
 	>
 		{#each events as event, i}
 			<div
@@ -85,7 +85,7 @@
 	</div>
 
 	<div class="controls">
-		<button class="nav-button up" onclick={scrollUp} aria-label={m.go_to_previous_event()}>
+		<button class="nav-button prev" onclick={scrollPrev} aria-label={m.go_to_previous_event()}>
 			<Rewind />
 		</button>
 		<button class="nav-button" onclick={scrollToToday} aria-label={m.jump_to_next_event()}>
@@ -95,7 +95,7 @@
 				<Play />
 			{/if}
 		</button>
-		<button class="nav-button down" onclick={scrollDown} aria-label={m.go_to_next_event()}>
+		<button class="nav-button next" onclick={scrollNext} aria-label={m.go_to_next_event()}>
 			<FastForward />
 		</button>
 	</div>
@@ -103,9 +103,16 @@
 
 <style>
 	:root {
-		--list-height: 350px;
-		--item-height: 70px;
+		--list-width: 100%;
+		--item-width: 250px;
+		--item-height: 120px;
 		--item-gap: 30px;
+	}
+
+	.scroller,
+	.list-container,
+	.event {
+		box-sizing: border-box;
 	}
 
 	.scroller {
@@ -119,19 +126,19 @@
 		overflow: hidden;
 		gap: 1.5rem;
 		margin-top: 5rem;
+		width: 100%;
 	}
 
 	.list-container {
-		height: var(--list-height);
-		width: 100%;
-		max-width: 500px;
-		overflow-y: scroll;
-		scroll-snap-type: y mandatory;
+		width: var(--list-width);
+		max-width: 800px;
+		height: calc(var(--item-height) + 40px);
+		overflow-x: scroll;
+		scroll-snap-type: x mandatory;
 		scroll-behavior: smooth;
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		gap: var(--item-gap);
 	}
@@ -140,15 +147,16 @@
 		display: none;
 	}
 
+
 	.list-container {
-		padding-top: calc(var(--list-height) / 2 - var(--item-height) / 2);
-		padding-bottom: calc(var(--list-height) / 2 - var(--item-height) / 2);
+		padding-left: calc(50% - var(--item-width) / 2);
+		padding-right: calc(50% - var(--item-width) / 2);
 	}
 
 	.event {
 		scroll-snap-align: center;
 		flex-shrink: 0;
-		width: 90%;
+		width: var(--item-width);
 		height: var(--item-height);
 		text-align: center;
 		padding: 1rem;
