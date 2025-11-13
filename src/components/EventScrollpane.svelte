@@ -7,18 +7,6 @@
 
 	let { events = [] }: { events: Event[] } = $props();
 
-	if (events.length === 0) {
-		events = [
-			{ date: '2025-06-30', title: 'Summer Drum Festival', place: 'Osaka City Hall' },
-			{ date: '2025-10-14', title: 'Percussion Workshop', place: 'Tokyo Jazz School' },
-			{ date: '2025-12-10', title: 'Winter Groove Session', place: 'Kobe Arts Center' },
-			{ date: '2026-01-12', title: 'New Year Concert', place: 'Kyoto Concert Hall' },
-			{ date: '2026-03-22', title: 'Rhythm of Spring', place: 'Nagoya Dome' },
-			{ date: '2026-05-15', title: 'Drum Tales', place: 'Hiroshima Sound Museum' },
-			{ date: '2026-09-01', title: 'Autumn Percussion Gala', place: 'Fukuoka Harmony Hall' },
-			{ date: '2026-12-05', title: 'End of Year Celebration', place: 'Tokyo Philharmonic' }
-		];
-	}
 	let listContainerEl: HTMLElement;
 	let scrollLeft = $state(0);
 	let ITEM_SPACING = 0;
@@ -92,9 +80,9 @@
 		</button>
 		<button class="nav-button" onclick={scrollToToday} aria-label={m.jump_to_next_event()}>
 			{#if Math.round(scrollIndex) === findNextEventIndex()}
-				<Pause />
+                <Pause />
 			{:else}
-				<Play />
+                <Play />
 			{/if}
 		</button>
 		<button class="nav-button next" onclick={scrollNext} aria-label={m.go_to_next_event()}>

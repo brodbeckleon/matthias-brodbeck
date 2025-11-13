@@ -14,7 +14,6 @@
 	<link rel="icon" type="image/png" sizes="32x32" href={favicon32x32} />
 	<link rel="icon" type="image/png" sizes="16x16" href={favicon16x16} />
 	<link rel="manifest" href={siteWebmanifest} />
-	<meta name="theme-color" content="#111" />
 </svelte:head>
 
 <div class="layout">

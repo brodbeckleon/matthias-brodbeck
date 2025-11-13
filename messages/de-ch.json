@@ -15,7 +15,20 @@
 	"cv_4": "Derzeit ist er Mitglied von «The Stone Alphabet» und dem Weltmusik-Quartett «Saitenschlag».",
 	"cv_5": "Matthias Brodbeck lebt in Zürich und arbeitet als freischaffender Musiker und Pädagoge.",
 
+    "past_and_upcoming_events": "Vergangene und kommende Auftritte",
 	"go_to_previous_event": "Zum vorherigen Auftritt",
 	"go_to_next_event": "Zum nächsten Auftritt",
-	"jump_to_next_event": "Zum aktuellen Auftritt"
+	"jump_to_next_event": "Zum aktuellen Auftritt",
+
+    "contact_me": "Kontaktieren Sie mich",
+    "name": "Name",
+    "email": "E-Mail",
+    "message": "Nachricht",
+    "send": "Senden",
+    "failed_to_send_message": "Nachricht konnte nicht gesendet werden.",
+    "message_sent_successfully": "Nachricht erfolgreich gesendet.",
+
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "network_error": "Netzwerkfehler, bitte versuchen Sie es später erneut."
 }
