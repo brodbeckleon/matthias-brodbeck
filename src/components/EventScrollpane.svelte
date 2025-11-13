@@ -71,11 +71,13 @@
 		onscroll={(e) => (scrollLeft = e.currentTarget.scrollLeft)}
 	>
 		{#each events as event, i}
+			{@const diff = Math.abs(i - Math.round(scrollIndex))}
 			<div
 				class="event"
-				style:transform="scale({1 - Math.abs(i - scrollIndex) * 0.15})"
-				style:opacity={Math.max(0, 1 - Math.abs(i - scrollIndex) * 0.4)}
-				style:z-index={100 - Math.floor(Math.abs(i - scrollIndex))}
+				style:transform="scale({1 - diff * 0.15})"
+				style:opacity={Math.max(0, 1 - diff * 0.4)}
+				style:z-index={100 - diff}
+				class:active={i === Math.round(scrollIndex)}
 			>
 				<p class="date">{event.date}</p>
 				<h3>{event.title}</h3>
@@ -147,7 +149,6 @@
 		display: none;
 	}
 
-
 	.list-container {
 		padding-left: calc(50% - var(--item-width) / 2);
 		padding-right: calc(50% - var(--item-width) / 2);
@@ -170,6 +171,14 @@
 		transition:
 			transform 0.2s ease-out,
 			opacity 0.2s ease-out;
+	}
+
+	.event.active {
+		transform: scale(1.1);
+		background: var(--accent);
+		color: var(--bg);
+		box-shadow: 0 0 20px var(--accent);
+		z-index: 999;
 	}
 
 	.date {
