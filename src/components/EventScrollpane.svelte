@@ -80,9 +80,9 @@
 		</button>
 		<button class="nav-button" onclick={scrollToToday} aria-label={m.jump_to_next_event()}>
 			{#if Math.round(scrollIndex) === findNextEventIndex()}
-                <Pause />
+				<Pause />
 			{:else}
-                <Play />
+				<Play />
 			{/if}
 		</button>
 		<button class="nav-button next" onclick={scrollNext} aria-label={m.go_to_next_event()}>

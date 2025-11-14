@@ -9,26 +9,27 @@
 	"contact": "Contact",
 	"gallery": "Gallery",
 
+	"biography": "Biography",
 	"cv_1": "Matthias Brodbeck was born in 1971. At the age of 13 he started taking his first drumlessons with Jean-Claude Forestier from the Basel Symphony Orchestra. From 1992 to 1996 he has studied at the Hochschule Luzern with Marc Halbheer and Pierre Favre. Further studies with Billy Brooks and Louis César Ewandé.",
 	"cv_2": "Matthias Brodbeck was a member of the experimental Rapgroup “P-27”, Andy Scherrer’s “Chapter 12” and the percussion-trio “Metrix”.",
 	"cv_3": "As a versatile drummer and percussionist, he has worked amongst others with Eddie Floyd (Blues Brothers), William Bell, Ruby Wilson, The Basel Percussion-Ensemble under the direction of Dr. Paul Sacher, Lionel Hampton, Gerry Hemingway, Andy Scherrer, Fritz Hauser, Jean-Paul Brodbeck, Wolfgang Zwiauer, Domenic Landolf, Thomas Möckel, Hans Feigenwinter, Dieter Ammann and the Musical “Keep Cool”.",
 	"cv_4": "Currently he is a member of “The Stone Alphabet” and the worldmusic-quartet “Saitenschlag”.",
 	"cv_5": "Matthias Brodbeck is living in Zurich and is working as a freelance musician and educator.",
 
-    "past_and_upcoming_events": "Past and upcoming events",
+	"past_and_upcoming_events": "Past and upcoming events",
 	"go_to_previous_event": "Go to previous event",
 	"go_to_next_event": "Go to next event",
 	"jump_to_next_event": "Jump to present event",
 
-    "contact_me": "Contact me",
-    "name": "Name",
-    "email": "Email",
-    "message": "Message",
-    "send": "Send",
-    "failed_to_send_message": "Failed to send message.",
-    "message_sent_successfully": "Message sent successfully.",
+	"contact_me": "Contact me",
+	"name": "Name",
+	"email": "Email",
+	"message": "Message",
+	"send": "Send",
+	"failed_to_send_message": "Failed to send message.",
+	"message_sent_successfully": "Message sent successfully.",
 
-    "loading": "Loading...",
-    "error": "Error",
-    "network_error": "Network error, please try again later."
+	"loading": "Loading...",
+	"error": "Error",
+	"network_error": "Network error, please try again later."
 }
