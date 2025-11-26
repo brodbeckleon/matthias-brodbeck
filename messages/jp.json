@@ -20,6 +20,7 @@
 	"go_to_previous_event": "前のイベントへ",
 	"go_to_next_event": "次のイベントへ",
 	"jump_to_next_event": "現在のイベントへ",
+    "no_events_available": "利用可能なイベントはありません。",
 
 	"contact_me": "お問い合わせ",
 	"name": "名前",
@@ -31,5 +32,9 @@
 
 	"loading": "読み込み中...",
 	"error": "エラー",
-	"network_error": "ネットワークエラーが発生しました。後でもう一度お試しください。"
+	"network_error": "ネットワークエラーが発生しました。後でもう一度お試しください。",
+
+	"name_required": "名前は必須です。",
+	"invalid_email": "無効なメールアドレスです。",
+	"message_required": "メッセージは必須です。"
 }

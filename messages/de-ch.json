@@ -20,6 +20,7 @@
 	"go_to_previous_event": "Zum vorherigen Auftritt",
 	"go_to_next_event": "Zum nächsten Auftritt",
 	"jump_to_next_event": "Zum aktuellen Auftritt",
+    "no_events_available": "Keine Auftritte verfügbar.",
 
 	"contact_me": "Kontaktieren Sie mich",
 	"name": "Name",
@@ -31,5 +32,9 @@
 
 	"loading": "Lädt...",
 	"error": "Fehler",
-	"network_error": "Netzwerkfehler, bitte versuchen Sie es später erneut."
+	"network_error": "Netzwerkfehler, bitte versuchen Sie es später erneut.",
+
+	"name_required": "Name ist erforderlich.",
+	"invalid_email": "Ungültige E-Mail-Adresse.",
+	"message_required": "Nachricht ist erforderlich."
 }

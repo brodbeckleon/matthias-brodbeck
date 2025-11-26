@@ -2,8 +2,15 @@
 	import { onMount } from 'svelte';
 	import { Rewind, FastForward, Play, Pause } from '@lucide/svelte';
 	import { m } from '$lib/paraglide/messages.js';
+	import { z } from 'zod';
 
-	export type Event = { date: string; title: string; place: string };
+	const eventSchema = z.object({
+		date: z.string(),
+		title: z.string(),
+		place: z.string()
+	});
+
+	type Event = z.infer<typeof eventSchema>;
 
 	let { events = [] }: { events: Event[] } = $props();
 
@@ -74,21 +81,25 @@
 		{/each}
 	</div>
 
-	<div class="controls">
-		<button class="nav-button prev" onclick={scrollPrev} aria-label={m.go_to_previous_event()}>
-			<Rewind />
-		</button>
-		<button class="nav-button" onclick={scrollToToday} aria-label={m.jump_to_next_event()}>
-			{#if Math.round(scrollIndex) === findNextEventIndex()}
-				<Pause />
-			{:else}
-				<Play />
-			{/if}
-		</button>
-		<button class="nav-button next" onclick={scrollNext} aria-label={m.go_to_next_event()}>
-			<FastForward />
-		</button>
-	</div>
+    {#if events.length > 0}
+        <div class="controls">
+            <button class="nav-button prev" onclick={scrollPrev} aria-label={m.go_to_previous_event()}>
+                <Rewind />
+            </button>
+            <button class="nav-button" onclick={scrollToToday} aria-label={m.jump_to_next_event()}>
+                {#if Math.round(scrollIndex) === findNextEventIndex()}
+                    <Pause />
+                {:else}
+                    <Play />
+                {/if}
+            </button>
+            <button class="nav-button next" onclick={scrollNext} aria-label={m.go_to_next_event()}>
+                <FastForward />
+            </button>
+        </div>
+    {:else }
+        <p>{m.no_events_available()}</p>
+    {/if}
 </div>
 
 <style>
