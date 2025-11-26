@@ -20,6 +20,7 @@
 	"go_to_previous_event": "Go to previous event",
 	"go_to_next_event": "Go to next event",
 	"jump_to_next_event": "Jump to present event",
+    "no_events_available": "No events available.",
 
 	"contact_me": "Contact me",
 	"name": "Name",
@@ -31,5 +32,9 @@
 
 	"loading": "Loading...",
 	"error": "Error",
-	"network_error": "Network error, please try again later."
+	"network_error": "Network error, please try again later.",
+
+	"name_required": "Name is required.",
+	"invalid_email": "Invalid email address.",
+	"message_required": "Message is required."
 }
