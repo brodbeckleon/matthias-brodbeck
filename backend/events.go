@@ -2,14 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
+	"strings"
 )
-
-type Event struct {
-	Date  string `json:"date"`
-	Title string `json:"title"`
-	Place string `json:"place"`
-}
 
 var events = []Event{
 	{Date: "2025-06-30", Title: "Summer Drum Festival", Place: "Osaka City Hall"},
@@ -23,19 +20,71 @@ var events = []Event{
 }
 
 func eventsHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	enableCORS(w)
 
-	if r.Method == http.MethodOptions {
-		w.WriteHeader(http.StatusOK)
+	rows, err := DB.Query("SELECT date, title, place FROM events")
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
 		return
 	}
+	defer rows.Close()
 
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
+	events := []Event{}
+	for rows.Next() {
+		var e Event
+		if err := rows.Scan(&e.Date, &e.Title, &e.Place); err != nil {
+			log.Println(err)
+			continue
+		}
+		events = append(events, e)
 	}
 
-	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(events)
+}
+
+func addEventHandler(w http.ResponseWriter, r *http.Request) {
+	enableCORS(w)
+
+	if r.Method != http.MethodPost {
+		http.Error(w, "Only POST allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var e Event
+	if err := json.NewDecoder(r.Body).Decode(&e); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	_, err := DB.Exec(
+		"INSERT INTO events (date, title, place) VALUES (?, ?, ?)",
+		e.Date, e.Title, e.Place,
+	)
+
+	if err != nil {
+		http.Error(w, "Database error", http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]string{
+		"status": "ok",
+	})
+}
+
+// ONLY FOR DEVELOPMENT PURPOSES
+func SeedEvents() {
+	for _, e := range events {
+		_, err := DB.Exec(
+			"INSERT INTO events (date, title, place) VALUES (?, ?, ?)",
+			e.Date, e.Title, e.Place,
+		)
+		if err != nil {
+			// ignore duplicates
+			if !strings.Contains(err.Error(), "Duplicate") {
+				log.Println("Seed error:", err)
+			}
+		}
+	}
+	fmt.Println("🌱 Events seeded")
 }
