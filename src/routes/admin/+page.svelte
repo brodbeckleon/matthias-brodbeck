@@ -21,10 +21,10 @@
 		<strong>Fotos</strong>
 		<span>Hochladen, beschreiben, Galerie ordnen</span>
 	</a>
-	<div class="tile pending">
+	<a class="tile" href="/admin/music">
 		<strong>Videos und Aufnahmen</strong>
-		<span>Folgt bald</span>
-	</div>
+		<span>YouTube-Videos und Diskografie</span>
+	</a>
 </div>
 
 <style>
@@ -56,9 +56,5 @@
 	.tile span {
 		color: var(--text-muted);
 		font-size: var(--text-sm);
-	}
-
-	.pending {
-		opacity: 0.7;
 	}
 </style>

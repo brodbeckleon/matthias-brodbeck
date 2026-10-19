@@ -92,6 +92,13 @@
 	"music_empty_title": "録音は準備中です",
 	"music_empty_text": "それまではYouTubeでコンサート映像をご覧いただけます。",
 	"music_empty_cta": "YouTubeで見る",
+	"music_watch": "映像",
+	"music_discography": "ディスコグラフィー",
+	"video_play": "動画を再生：{title}",
+	"video_privacy": "動画は再生ボタンを押したときにYouTubeから読み込まれます。",
+	"embed_load": "{platform}のプレーヤーを読み込む",
+	"embed_privacy": "{platform}のコンテンツを読み込みます。",
+	"release_role": "担当：{role}",
 
 	"gallery_description": "ステージやリハーサルでのマティアス・ブロートベックの写真。",
 	"gallery_empty_title": "写真はまだありません",

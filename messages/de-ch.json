@@ -92,6 +92,13 @@
 	"music_empty_title": "Aufnahmen folgen",
 	"music_empty_text": "Bis dahin gibt es Konzertausschnitte auf YouTube.",
 	"music_empty_cta": "Auf YouTube ansehen",
+	"music_watch": "Videos",
+	"music_discography": "Diskografie",
+	"video_play": "Video abspielen: {title}",
+	"video_privacy": "Videos werden erst beim Abspielen von YouTube geladen.",
+	"embed_load": "{platform}-Player laden",
+	"embed_privacy": "Lädt Inhalte von {platform}.",
+	"release_role": "Spielt {role}",
 
 	"gallery_description": "Fotos von Matthias Brodbeck auf der Bühne und im Proberaum.",
 	"gallery_empty_title": "Noch keine Fotos",

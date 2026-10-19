@@ -92,6 +92,13 @@
 	"music_empty_title": "Recordings are on the way",
 	"music_empty_text": "Until then, concert clips are on YouTube.",
 	"music_empty_cta": "Watch on YouTube",
+	"music_watch": "Watch",
+	"music_discography": "Discography",
+	"video_play": "Play video: {title}",
+	"video_privacy": "Videos are loaded from YouTube when you press play.",
+	"embed_load": "Load the {platform} player",
+	"embed_privacy": "Loads content from {platform}.",
+	"release_role": "Plays {role}",
 
 	"gallery_description": "Photos of Matthias Brodbeck on stage and in rehearsal.",
 	"gallery_empty_title": "No photos yet",

@@ -1,5 +1,6 @@
 <script lang="ts">
 	type Props = {
+		/** Shown and announced; leave empty for a purely decorative placeholder. */
 		label: string;
 		/** CSS aspect-ratio, e.g. "4 / 5". */
 		ratio?: string;
@@ -12,7 +13,13 @@
 </script>
 
 <!-- Stands in for photos that have not been supplied yet. -->
-<div class="placeholder" style:aspect-ratio={ratio} role="img" aria-label={label}>
+<div
+	class="placeholder"
+	style:aspect-ratio={ratio}
+	role={label ? 'img' : undefined}
+	aria-label={label || undefined}
+	aria-hidden={label ? undefined : 'true'}
+>
 	<svg viewBox="-50 -50 100 100" aria-hidden="true">
 		<circle r="44" class="rim" />
 		<circle r="38" class="head" />
@@ -29,7 +36,7 @@
 			/>
 		{/each}
 	</svg>
-	<span>{label}</span>
+	{#if label}<span>{label}</span>{/if}
 </div>
 
 <style>

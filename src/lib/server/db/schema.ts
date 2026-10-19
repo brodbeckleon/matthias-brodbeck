@@ -114,7 +114,41 @@ export const media = pgTable(
 	(table) => [index('media_gallery_idx').on(table.published, table.sortOrder)]
 );
 
+/** YouTube videos, shown behind a click-to-load facade. */
+export const video = pgTable('video', {
+	id: serial('id').primaryKey(),
+	youtubeId: text('youtube_id').notNull().unique(),
+	title: text('title').notNull(),
+	/** Copied to our storage at save time, so visitors never contact YouTube before clicking. */
+	thumbnailUrl: text('thumbnail_url'),
+	thumbnailKey: text('thumbnail_key'),
+	published: boolean('published').notNull().default(true),
+	sortOrder: integer('sort_order').notNull().default(0),
+	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+});
+
+export type ReleaseLink = { label: string; url: string };
+
+/** Discography entries. */
+export const release = pgTable('release', {
+	id: serial('id').primaryKey(),
+	title: text('title').notNull(),
+	artist: text('artist').notNull(),
+	year: integer('year'),
+	label: text('label'),
+	/** What Matthias plays on it, e.g. "Schlagzeug, Perkussion". */
+	role: text('role'),
+	coverMediaId: integer('cover_media_id').references(() => media.id, { onDelete: 'set null' }),
+	links: jsonb('links').$type<ReleaseLink[]>().notNull().default([]),
+	/** Bandcamp or SoundCloud player URL, loaded only after a click. */
+	embedUrl: text('embed_url'),
+	published: boolean('published').notNull().default(true),
+	createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+});
+
 export type EventRow = typeof event.$inferSelect;
 export type NewEventRow = typeof event.$inferInsert;
 export type ContactMessageRow = typeof contactMessage.$inferSelect;
 export type MediaRow = typeof media.$inferSelect;
+export type VideoRow = typeof video.$inferSelect;
+export type ReleaseRow = typeof release.$inferSelect;
