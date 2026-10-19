@@ -1,21 +1,29 @@
 <script lang="ts">
 	import '../global.css';
+	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages.js';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
 	import SiteHeader from '$lib/components/SiteHeader.svelte';
 
 	let { children } = $props();
+
+	// The admin area brings its own shell.
+	const isAdmin = $derived(page.route.id?.startsWith('/admin') ?? false);
 </script>
 
-<a class="skip-link" href="#main">{m.skip_to_content()}</a>
-
-<SiteHeader />
-
-<main id="main" tabindex="-1">
+{#if isAdmin}
 	{@render children()}
-</main>
+{:else}
+	<a class="skip-link" href="#main">{m.skip_to_content()}</a>
 
-<SiteFooter />
+	<SiteHeader />
+
+	<main id="main" tabindex="-1">
+		{@render children()}
+	</main>
+
+	<SiteFooter />
+{/if}
 
 <style>
 	.skip-link {

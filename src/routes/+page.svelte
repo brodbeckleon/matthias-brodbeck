@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { m } from '$lib/paraglide/messages.js';
 	import { localizePath } from '$lib/i18n/href';
+	import EventCard from '$lib/components/EventCard.svelte';
 	import JsonLd from '$lib/components/JsonLd.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
@@ -8,6 +9,8 @@
 	import RhythmGrid from '$lib/components/ui/RhythmGrid.svelte';
 	import { personLd } from '$lib/seo/jsonld';
 	import { socialHref } from '$lib/site';
+
+	let { data } = $props();
 
 	const projects = [
 		{ name: 'The Stone Alphabet', note: '' },
@@ -36,6 +39,18 @@
 		<PatternPlaceholder label={m.portrait_placeholder()} />
 	</div>
 </section>
+
+{#if data.nextEvents.length}
+	<section class="section">
+		<h2>{m.next_concerts()}</h2>
+		<div>
+			{#each data.nextEvents as event (event.id)}
+				<EventCard {event} />
+			{/each}
+			<p class="more"><a href={localizePath('/events')}>{m.all_concerts()}</a></p>
+		</div>
+	</section>
+{/if}
 
 <section class="section bio">
 	<h2>{m.biography()}</h2>
@@ -139,6 +154,11 @@
 			grid-template-columns: 16rem 1fr;
 			gap: var(--space-8);
 		}
+	}
+
+	.more {
+		padding-top: var(--space-4);
+		border-top: 1px solid var(--line);
 	}
 
 	.lead {
