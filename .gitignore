@@ -24,3 +24,13 @@ vite.config.ts.timestamp-*
 
 # Paraglide
 src/lib/paraglide
+
+# IDE
+.idea/
+
+# Playwright
+/test-results
+/playwright-report
+
+# Local embedded database
+/.data
