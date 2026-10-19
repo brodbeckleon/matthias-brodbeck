@@ -31,7 +31,8 @@ Install the Playwright browser once with `npx playwright install chromium`.
 - Page text lives in `messages/{en,de-ch,ja}.json`. A unit test fails if a locale is missing a key.
 - Site-wide facts (domain, contact email, social links) live in `src/lib/site.ts`. The domain and
   email are still placeholders and must be replaced before launch.
-- Concerts are managed by Matthias at `/admin`.
+- Concerts, photos, videos, releases and contact messages are managed by Matthias at `/admin`.
+  His guide (German) is [docs/ANLEITUNG.md](docs/ANLEITUNG.md).
 
 ## Admin password
 
@@ -49,12 +50,25 @@ for that.
 1. Create a Neon project in `eu-central-1` (Frankfurt) and copy its connection string.
 2. Run `DATABASE_URL=… npm run db:migrate` once, and again after every new migration.
 3. Import the repository in Vercel. The adapter deploys functions to `fra1`.
-4. Set `DATABASE_URL`, `ADMIN_PASSWORD_HASH` and `IP_HASH_SALT` in the project's environment
-   variables.
-5. Replace `SITE_URL` and `CONTACT_EMAIL` in `src/lib/site.ts`.
+4. Create a Blob store in the Vercel project (Storage → Blob); this sets `BLOB_READ_WRITE_TOKEN`.
+5. Set `DATABASE_URL`, `ADMIN_PASSWORD_HASH` and `IP_HASH_SALT` in the project's environment
+   variables, and for the contact form `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL`
+   (verify the sending domain in Resend), `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY`.
+   See `.env.example`; each integration is optional and the site degrades gracefully without it.
+6. Replace `SITE_URL` and `CONTACT_EMAIL` in `src/lib/site.ts`, and add the postal address on the
+   legal notice page.
 
 Vercel's free Hobby plan is for non-commercial use only; a musician's site taking bookings needs
 the Pro plan, or Netlify (only the adapter changes).
+
+## Security
+
+- CSP is configured in `svelte.config.js` (`kit.csp`): nonces on rendered pages, hashes in a
+  `<meta>` tag on prerendered ones. The inline theme script in `src/app.html` is allowed by a hash
+  computed from the file at build time. New third-party embeds need their host added there.
+- `hooks.server.ts` adds the remaining security headers to rendered responses and guards `/admin`.
+- Uploads are re-encoded in the browser and checked by magic bytes on the server; visitor text is
+  never rendered as HTML.
 
 ## Structure
 
@@ -63,5 +77,8 @@ the Pro plan, or Netlify (only the adapter changes).
 - `src/lib/styles/tokens.css`: colours, type scale, spacing, motion
 - `src/lib/server`: database, auth, rate limiting, event queries (server-only)
 - `src/lib/events`: event form validation, slugs, time zones, formatting, iCalendar export
+- `src/lib/music`: YouTube/embed URL parsing and the release form
+- `src/lib/contact`: contact form schema
+- `docs/ANLEITUNG.md`: admin guide for Matthias (German)
 - `drizzle/`: SQL migrations
 - `e2e/`: Playwright tests

@@ -1,5 +1,7 @@
 <script lang="ts">
 	import '../global.css';
+	// The Latin subset carries every heading; preloading it avoids a late swap of the hero name.
+	import archivoLatin from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
 	import { page } from '$app/state';
 	import { m } from '$lib/paraglide/messages.js';
 	import SiteFooter from '$lib/components/SiteFooter.svelte';
@@ -10,6 +12,10 @@
 	// The admin area brings its own shell.
 	const isAdmin = $derived(page.route.id?.startsWith('/admin') ?? false);
 </script>
+
+<svelte:head>
+	<link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin="anonymous" />
+</svelte:head>
 
 {#if isAdmin}
 	{@render children()}

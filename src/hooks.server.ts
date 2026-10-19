@@ -38,4 +38,20 @@ const handleAdmin: Handle = async ({ event, resolve }) => {
 	return response;
 };
 
-export const handle: Handle = sequence(handleAdmin, handleParaglide);
+/**
+ * Headers for every rendered response. Prerendered pages get their CSP from a <meta> tag instead;
+ * the rest matters less there, as they hold no forms or session.
+ */
+const handleSecurityHeaders: Handle = async ({ event, resolve }) => {
+	const response = await resolve(event);
+	response.headers.set('x-content-type-options', 'nosniff');
+	response.headers.set('referrer-policy', 'strict-origin-when-cross-origin');
+	response.headers.set('x-frame-options', 'DENY');
+	response.headers.set(
+		'permissions-policy',
+		'camera=(), microphone=(), geolocation=(), payment=(), usb=()'
+	);
+	return response;
+};
+
+export const handle: Handle = sequence(handleSecurityHeaders, handleAdmin, handleParaglide);

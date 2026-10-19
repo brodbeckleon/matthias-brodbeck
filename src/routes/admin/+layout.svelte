@@ -8,6 +8,7 @@
 		{ href: '/admin/events', label: 'Konzerte' },
 		{ href: '/admin/photos', label: 'Fotos' },
 		{ href: '/admin/music', label: 'Musik' },
+		{ href: '/admin/settings', label: 'Einstellungen' },
 		{ href: '/admin/messages', label: data.unread ? `Nachrichten (${data.unread})` : 'Nachrichten' }
 	]);
 
