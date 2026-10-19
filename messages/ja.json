@@ -97,6 +97,12 @@
 	"gallery_empty_title": "写真はまだありません",
 	"gallery_empty_text": "コンサートやリハーサルの写真をここに掲載します。最新の写真はInstagramでご覧いただけます。",
 	"gallery_empty_cta": "Instagramを見る",
+	"gallery_close": "閉じる",
+	"gallery_previous": "前の写真",
+	"gallery_next": "次の写真",
+	"gallery_position": "写真 {current} / {total}",
+	"photo_credit": "写真：{name}",
+	"gallery_more": "その他の写真はInstagramでご覧いただけます。",
 
 	"contact_description": "コンサート、レコーディング、レッスン、取材についてのお問い合わせ。",
 	"contact_heading": "お問い合わせ",

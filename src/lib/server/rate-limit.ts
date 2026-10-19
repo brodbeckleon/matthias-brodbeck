@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { sql } from 'drizzle-orm';
+import { and, eq, gt, sql } from 'drizzle-orm';
 import { env } from '$env/dynamic/private';
 import { getDb, schema } from './db';
 
@@ -31,4 +31,15 @@ export async function hit(key: string, limit: number, windowMs: number): Promise
 		})
 		.returning({ count: rateLimit.count });
 	return row.count <= limit;
+}
+
+/** Whether `key` has already used up `limit` in its current window, without counting an attempt. */
+export async function isLimited(key: string, limit: number): Promise<boolean> {
+	const db = await getDb();
+	const { rateLimit } = schema;
+	const [row] = await db
+		.select({ count: rateLimit.count })
+		.from(rateLimit)
+		.where(and(eq(rateLimit.key, key), gt(rateLimit.resetAt, new Date())));
+	return (row?.count ?? 0) >= limit;
 }

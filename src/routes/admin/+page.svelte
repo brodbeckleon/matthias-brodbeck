@@ -17,10 +17,10 @@
 		<strong>Nachrichten</strong>
 		<span>Anfragen aus dem Kontaktformular</span>
 	</a>
-	<div class="tile pending">
+	<a class="tile" href="/admin/photos">
 		<strong>Fotos</strong>
-		<span>Folgt bald</span>
-	</div>
+		<span>Hochladen, beschreiben, Galerie ordnen</span>
+	</a>
 	<div class="tile pending">
 		<strong>Videos und Aufnahmen</strong>
 		<span>Folgt bald</span>

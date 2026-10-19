@@ -97,6 +97,12 @@
 	"gallery_empty_title": "No photos yet",
 	"gallery_empty_text": "Photos from concerts and rehearsals will appear here. Recent ones are on Instagram.",
 	"gallery_empty_cta": "See Instagram",
+	"gallery_close": "Close",
+	"gallery_previous": "Previous photo",
+	"gallery_next": "Next photo",
+	"gallery_position": "Photo {current} of {total}",
+	"photo_credit": "Photo: {name}",
+	"gallery_more": "More photos are on Instagram.",
 
 	"contact_description": "Contact Matthias Brodbeck for concerts, recording sessions, lessons and press.",
 	"contact_heading": "Get in touch",

@@ -9,7 +9,15 @@ const config = {
 		adapter: adapter({
 			runtime: 'nodejs22.x',
 			// Frankfurt, next to the Neon database in eu-central-1.
-			regions: ['fra1']
+			regions: ['fra1'],
+			// Must match IMAGE_WIDTHS in src/lib/image.ts.
+			images: {
+				sizes: [480, 828, 1280, 1920],
+				formats: ['image/avif', 'image/webp'],
+				minimumCacheTTL: 60 * 60 * 24 * 31,
+				domains: [],
+				remotePatterns: [{ protocol: 'https', hostname: '*.public.blob.vercel-storage.com' }]
+			}
 		}),
 		prerender: {
 			// Static pages in each locale; the crawler finds the rest through their links.

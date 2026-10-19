@@ -6,11 +6,17 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import PatternPlaceholder from '$lib/components/ui/PatternPlaceholder.svelte';
+	import ResponsiveImage from '$lib/components/ResponsiveImage.svelte';
+	import { toBcp47 } from '$lib/i18n/format';
+	import { pickLocale } from '$lib/i18n/localized';
+	import { getLocale } from '$lib/paraglide/runtime';
 	import RhythmGrid from '$lib/components/ui/RhythmGrid.svelte';
 	import { personLd } from '$lib/seo/jsonld';
 	import { socialHref } from '$lib/site';
 
 	let { data } = $props();
+
+	const portraitAlt = $derived(data.portrait ? pickLocale(data.portrait.alt, getLocale()) : null);
 
 	const projects = [
 		{ name: 'The Stone Alphabet', note: '' },
@@ -36,7 +42,19 @@
 		</div>
 	</div>
 	<div class="portrait">
-		<PatternPlaceholder label={m.portrait_placeholder()} />
+		{#if data.portrait}
+			<ResponsiveImage
+				class="portrait-image"
+				image={data.portrait}
+				alt={portraitAlt?.value ?? ''}
+				lang={portraitAlt ? toBcp47(portraitAlt.lang) : undefined}
+				sizes="(min-width: 60rem) 20rem, 70vw"
+				loading="eager"
+				fetchpriority="high"
+			/>
+		{:else}
+			<PatternPlaceholder label={m.portrait_placeholder()} />
+		{/if}
 	</div>
 </section>
 
@@ -129,6 +147,14 @@
 
 	.portrait {
 		max-width: min(16rem, 70%);
+	}
+
+	.portrait :global(.portrait-image) {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 5;
+		object-fit: cover;
+		border-radius: var(--radius);
 	}
 
 	@media (min-width: 60rem) {

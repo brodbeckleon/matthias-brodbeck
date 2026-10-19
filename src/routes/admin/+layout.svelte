@@ -6,6 +6,7 @@
 	const links = $derived([
 		{ href: '/admin', label: 'Übersicht' },
 		{ href: '/admin/events', label: 'Konzerte' },
+		{ href: '/admin/photos', label: 'Fotos' },
 		{ href: '/admin/messages', label: data.unread ? `Nachrichten (${data.unread})` : 'Nachrichten' }
 	]);
 

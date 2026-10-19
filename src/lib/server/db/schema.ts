@@ -93,6 +93,28 @@ export const contactMessage = pgTable(
 	(table) => [index('contact_message_status_idx').on(table.status, table.createdAt)]
 );
 
+/** Uploaded photos. Published ones form the public gallery, in sortOrder. */
+export const media = pgTable(
+	'media',
+	{
+		id: serial('id').primaryKey(),
+		url: text('url').notNull(),
+		/** Key in the storage backend, needed to delete the file. */
+		storageKey: text('storage_key').notNull(),
+		width: integer('width').notNull(),
+		height: integer('height').notNull(),
+		alt: jsonb('alt').$type<LocalizedText>().notNull().default({}),
+		credit: text('credit'),
+		published: boolean('published').notNull().default(false),
+		/** The photo shown on the home page; at most one row has this set. */
+		portrait: boolean('portrait').notNull().default(false),
+		sortOrder: integer('sort_order').notNull().default(0),
+		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+	},
+	(table) => [index('media_gallery_idx').on(table.published, table.sortOrder)]
+);
+
 export type EventRow = typeof event.$inferSelect;
 export type NewEventRow = typeof event.$inferInsert;
 export type ContactMessageRow = typeof contactMessage.$inferSelect;
+export type MediaRow = typeof media.$inferSelect;
