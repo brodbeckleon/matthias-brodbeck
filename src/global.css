@@ -1,39 +1,91 @@
-:root {
-	--bg: #f9f9f9;
-	--bg-secondary: #e4e4e4;
-	--text: #111;
-	--text-muted: #555;
-	--accent: #f0a500;
+@import '@fontsource-variable/archivo/wdth.css';
+@import './lib/styles/tokens.css';
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
 }
 
-[data-theme='dark'] {
-	--bg: #111;
-	--bg-secondary: #222;
-	--text: white;
-	--text-muted: #ccc;
-	--accent: #f0a500;
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	/* Keeps anchors and focused elements clear of the sticky header. */
+	scroll-padding-top: 5rem;
 }
 
-[data-theme='light'] {
-	--bg: #f9f9f9;
-	--bg-secondary: #e4e4e4;
-	--text: #111;
-	--text-muted: #555;
-	--accent: #f0a500;
-}
-
-html,
 body {
 	margin: 0;
-	padding: 0;
-	background-color: var(--bg);
+	min-height: 100vh;
+	background: var(--bg);
 	color: var(--text);
-	font-family: 'Courier New', serif;
+	font-family: var(--font);
+	font-size: var(--text-base);
+	font-stretch: var(--stretch-body);
+	line-height: 1.55;
+	font-variant-numeric: tabular-nums;
 }
 
-/* Browser toolbar color (mobile browsers + Chrome) */
-meta[name='theme-color'] {
-	content: var(--bg);
+h1,
+h2,
+h3 {
+	margin: 0;
+	font-stretch: var(--stretch-display);
+	font-weight: 750;
+	line-height: 1;
+	letter-spacing: -0.005em;
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: var(--text-h1);
+}
+
+h2 {
+	font-size: var(--text-h2);
+}
+
+h3 {
+	font-size: var(--text-h3);
+	line-height: 1.15;
+}
+
+/* Condensed Latin type has no CJK counterpart; keep Japanese headings at normal width and weight. */
+:is(h1, h2, h3):lang(ja) {
+	font-weight: 700;
+	line-height: 1.3;
+	letter-spacing: 0;
+}
+
+p {
+	margin: 0;
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--accent-ink);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+a:hover {
+	text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+	outline: 2px solid var(--accent-ink);
+	outline-offset: 3px;
+}
+
+img,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+button {
+	font: inherit;
+	color: inherit;
 }
 
 button:disabled {
@@ -41,25 +93,32 @@ button:disabled {
 	cursor: not-allowed;
 }
 
-.error {
-	color: red;
-	font-size: 0.875rem;
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+	border: 0;
 }
 
-.success {
-	color: green;
-	font-size: 0.875rem;
+.prose {
+	max-width: var(--prose-max);
+	display: grid;
+	gap: var(--space-4);
 }
 
-.rotate-element {
-	animation: rotation 2s infinite linear;
+.page-intro {
+	display: grid;
+	gap: var(--space-4);
+	max-width: var(--prose-max);
+	margin-block-end: var(--space-12);
 }
 
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
+.page-intro p {
+	color: var(--text-muted);
+	font-size: var(--text-lg);
 }
