@@ -3,15 +3,15 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://svelte.dev/docs/kit/integrations
-	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 
 	kit: {
-		// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-		// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
-		adapter: adapter()
+		// adapter-auto until hosting is decided.
+		adapter: adapter(),
+		prerender: {
+			// Static pages in each locale; the crawler finds the rest through their links.
+			entries: ['*', '/de-ch/about', '/ja/about']
+		}
 	}
 };
 

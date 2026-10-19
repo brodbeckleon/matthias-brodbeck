@@ -37,10 +37,10 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
-
 ## Create Dockerdatabase
+
 ```shell
- docker run -d \                                                                                                                
+ docker run -d \
   --name my-mysql \
   -e MYSQL_ROOT_PASSWORD=secret \
   -e MYSQL_DATABASE=mydb \
@@ -49,6 +49,7 @@ You can preview the production build with `npm run preview`.
 ```
 
 ## Login to mysql
+
 ```shell
 mysql -h 127.0.0.1 -P 3306 -u root -p
 ```

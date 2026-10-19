@@ -1,39 +1,179 @@
 <script lang="ts">
 	import { m } from '$lib/paraglide/messages.js';
+	import { localizePath } from '$lib/i18n/href';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import Seo from '$lib/components/Seo.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import PatternPlaceholder from '$lib/components/ui/PatternPlaceholder.svelte';
+	import RhythmGrid from '$lib/components/ui/RhythmGrid.svelte';
+	import { personLd } from '$lib/seo/jsonld';
+	import { socialHref } from '$lib/site';
+
+	const projects = [
+		{ name: 'The Stone Alphabet', note: '' },
+		{ name: 'Saitenschlag', note: m.project_saitenschlag() }
+	];
 </script>
 
-<div class="home">
-	<img
-		src="https://musikschule-muenchenstein.ch/images/personen/lehrpersonen/matthias_brodbeck_schlagzeug.jpg"
-		alt={m.mattias_brodbeck()}
-	/>
+<Seo description={m.home_description()} />
+<JsonLd data={personLd()} />
 
-	<div class="cv_content">
-		<h3>{m.biography()}</h3>
-		<p>{m.cv_1()}</p>
-		<p>{m.cv_2()}</p>
-		<p>{m.cv_3()}</p>
-		<p>{m.cv_4()}</p>
-		<p>{m.cv_5()}</p>
+<section class="hero">
+	<div class="hero-text">
+		<!-- The name is German; marking it keeps Japanese heading rules off the Latin display type. -->
+		<h1 lang="de">
+			<span class="first">Matthias</span>
+			<span class="last">Brodbeck</span>
+		</h1>
+		<p class="role">{m.hero_role()}</p>
+		<RhythmGrid caption={m.rhythm_caption()} playLabel={m.rhythm_play()} />
+		<div class="actions">
+			<Button href={localizePath('/contact')}>{m.cta_booking()}</Button>
+			<Button href={localizePath('/events')} variant="secondary">{m.cta_concerts()}</Button>
+		</div>
 	</div>
-</div>
+	<div class="portrait">
+		<PatternPlaceholder label={m.portrait_placeholder()} />
+	</div>
+</section>
 
-<style lang="css">
-	.home {
+<section class="section bio">
+	<h2>{m.biography()}</h2>
+	<div class="prose">
+		<p class="lead">{m.bio_short()}</p>
+		<p><a href={localizePath('/about')}>{m.read_full_bio()}</a></p>
+	</div>
+</section>
+
+<section class="section">
+	<h2>{m.current_projects()}</h2>
+	<ul class="projects">
+		{#each projects as project (project.name)}
+			<li>
+				<a href={localizePath('/about#projects')}>{project.name}</a>
+				{#if project.note}<span>{project.note}</span>{/if}
+			</li>
+		{/each}
+	</ul>
+</section>
+
+<section class="section">
+	<h2>{m.video_heading()}</h2>
+	<div class="prose">
+		<p>{m.video_text()}</p>
+		<div>
+			<Button
+				href={socialHref('YouTube')}
+				variant="secondary"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				{m.video_cta()}<span class="visually-hidden">{m.opens_new_tab()}</span>
+			</Button>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		display: grid;
+		gap: var(--space-12);
+		padding-bottom: var(--space-16);
+	}
+
+	.hero-text {
+		display: grid;
+		gap: var(--space-8);
+		align-content: start;
+	}
+
+	h1 {
+		display: grid;
+		font-size: var(--text-hero);
+		font-weight: 800;
+		line-height: 0.82;
+		letter-spacing: -0.02em;
+	}
+
+	/* The surname steps in by one grid cell, like an offbeat. */
+	.last {
+		padding-left: 0.5em;
+		color: var(--accent-ink);
+	}
+
+	.role {
+		font-size: var(--text-lg);
+		color: var(--text-muted);
+	}
+
+	.actions {
 		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding: 20px;
-		gap: 20px;
+		flex-wrap: wrap;
+		gap: var(--space-3);
 	}
 
-	.cv_content {
-		flex: 1;
+	.portrait {
+		max-width: min(16rem, 70%);
 	}
 
-	img {
-		max-width: 200px;
-		height: auto;
-		border-radius: 10px;
+	@media (min-width: 60rem) {
+		.hero {
+			grid-template-columns: 1fr 20rem;
+			align-items: end;
+		}
+
+		.portrait {
+			max-width: none;
+		}
+	}
+
+	.section {
+		display: grid;
+		gap: var(--space-6);
+		padding: var(--space-12) 0;
+		border-top: 1px solid var(--line);
+	}
+
+	@media (min-width: 48rem) {
+		.section {
+			grid-template-columns: 16rem 1fr;
+			gap: var(--space-8);
+		}
+	}
+
+	.lead {
+		font-size: var(--text-lg);
+	}
+
+	.projects {
+		display: grid;
+		gap: var(--space-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.projects li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: var(--space-2) var(--space-4);
+	}
+
+	.projects a {
+		color: var(--text);
+		font-size: var(--text-h2);
+		font-stretch: var(--stretch-display);
+		font-weight: 750;
+		line-height: 1;
+		text-decoration: none;
+	}
+
+	.projects a:hover {
+		color: var(--accent-ink);
+	}
+
+	.projects span {
+		color: var(--text-muted);
 	}
 </style>

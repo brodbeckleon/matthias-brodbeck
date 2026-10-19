@@ -1,68 +1,46 @@
 <script lang="ts">
-	import appleTouchIcon from '$lib/assets/apple-touch-icon.png';
-	import favicon32x32 from '$lib/assets/favicon-32x32.png';
-	import favicon16x16 from '$lib/assets/favicon-16x16.png';
-	import siteWebmanifest from '$lib/assets/site.webmanifest';
-	import Navigation from '../components/Navigation.svelte';
 	import '../global.css';
+	import { m } from '$lib/paraglide/messages.js';
+	import SiteFooter from '$lib/components/SiteFooter.svelte';
+	import SiteHeader from '$lib/components/SiteHeader.svelte';
 
 	let { children } = $props();
 </script>
 
-<svelte:head>
-	<link rel="apple-touch-icon" sizes="180x180" href={appleTouchIcon} />
-	<link rel="icon" type="image/png" sizes="32x32" href={favicon32x32} />
-	<link rel="icon" type="image/png" sizes="16x16" href={favicon16x16} />
-	<link rel="manifest" href={siteWebmanifest} />
-</svelte:head>
+<a class="skip-link" href="#main">{m.skip_to_content()}</a>
 
-<div class="layout">
-	<div class="topbar">
-		<Navigation />
-	</div>
-	<div class="container">
-		{@render children()}
-	</div>
-</div>
+<SiteHeader />
 
-<style lang="css">
-	.layout {
-		display: flex;
-		flex-direction: column;
-		height: 100vh;
-		overflow: hidden;
-	}
+<main id="main" tabindex="-1">
+	{@render children()}
+</main>
 
-	.topbar {
-		position: sticky; /* or fixed */
-		top: 0;
+<SiteFooter />
+
+<style>
+	.skip-link {
+		position: absolute;
+		top: var(--space-2);
+		left: var(--space-2);
 		z-index: 100;
-		background: var(--bg); /* ensure same background */
+		padding: var(--space-2) var(--space-4);
+		background: var(--accent);
+		color: var(--on-accent);
+		font-weight: 650;
+		transform: translateY(-200%);
 	}
 
-	.container {
-		flex: 1;
-		overflow-y: auto; /* Only this scrolls */
+	.skip-link:focus {
+		transform: none;
+	}
+
+	main {
+		max-width: var(--content-max);
 		margin: 0 auto;
-		width: 50vw;
-		padding-bottom: 2rem;
+		padding: var(--space-12) var(--gutter) 0;
 	}
 
-	@media (max-width: 599px) {
-		.container {
-			width: 95vw;
-		}
-	}
-
-	@media (min-width: 600px) {
-		.container {
-			width: 90vw;
-		}
-	}
-
-	@media (min-width: 900px) {
-		.container {
-			width: 70vw;
-		}
+	main:focus {
+		outline: none;
 	}
 </style>

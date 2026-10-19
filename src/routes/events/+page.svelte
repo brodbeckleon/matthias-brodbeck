@@ -1,45 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import EventScrollpane from '../../components/EventScrollpane.svelte';
-	import type { Event } from '../../components/EventScrollpane.svelte';
 	import { m } from '$lib/paraglide/messages.js';
-
-	let events: Event[] = [];
-	let loading = true;
-	let error = '';
-
-	onMount(async () => {
-		try {
-			const res = await fetch('http://localhost:8080/events');
-			if (!res.ok) throw new Error('Failed to load events');
-			events = await res.json();
-		} catch (err) {
-			console.error(err);
-			error = 'Could not load events.';
-		} finally {
-			loading = false;
-		}
-	});
+	import { localizePath } from '$lib/i18n/href';
+	import Seo from '$lib/components/Seo.svelte';
+	import Button from '$lib/components/ui/Button.svelte';
+	import EmptyState from '$lib/components/ui/EmptyState.svelte';
 </script>
 
-<div class="events-page">
-	<h1>{m.events()}</h1>
-	<h4>{m.past_and_upcoming_events()}</h4>
+<Seo title={m.concerts()} description={m.concerts_description()} />
 
-	{#if loading}
-		<p>{m.loading()}</p>
-	{:else if error}
-		<p class="error">{m.error()}</p>
-	{:else}
-		<EventScrollpane {events} />
-	{/if}
-</div>
+<header class="page-intro">
+	<h1>{m.concerts()}</h1>
+</header>
 
-<style lang="css">
-	.events-page {
-		margin: 0;
-		height: 100%;
-		overflow: hidden;
-		flex: 1;
-	}
-</style>
+<!-- Concerts come from the database once the admin area exists (P4). -->
+<EmptyState title={m.concerts_empty_title()} text={m.concerts_empty_text()}>
+	<Button href={localizePath('/contact')}>{m.cta_booking()}</Button>
+</EmptyState>
