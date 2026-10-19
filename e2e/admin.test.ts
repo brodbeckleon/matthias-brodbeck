@@ -53,16 +53,16 @@ test('a concert goes from draft to published', async ({ page }) => {
 	await page.getByRole('button', { name: 'Konzert speichern' }).click();
 
 	await expect(page).toHaveURL(/\/admin\/events/);
-	await page.getByRole('tab', { name: /Entwürfe/ }).click();
+	await page.getByRole('link', { name: /Entwürfe/ }).click();
 	await expect(page.getByRole('link', { name: 'Saitenschlag im Moods' })).toBeVisible();
 
 	// Drafts are not public.
 	const draft = await page.request.get(`/events/${year}-11-14-saitenschlag-im-moods`);
 	expect(draft.status()).toBe(404);
 
-	await page.getByRole('tab', { name: /Entwürfe/ }).click();
+	await page.getByRole('link', { name: /Entwürfe/ }).click();
 	await page.getByRole('button', { name: 'Veröffentlichen' }).click();
-	await expect(page.getByRole('tab', { name: /Kommend 1/ })).toBeVisible();
+	await expect(page.getByRole('link', { name: /Kommend 1/ })).toBeVisible();
 
 	await page.goto('/de-ch/events');
 	await page.getByRole('link', { name: 'Saitenschlag im Moods' }).click();
@@ -96,7 +96,21 @@ test('a deleted concert can be restored', async ({ page }) => {
 	await page.getByRole('button', { name: 'Löschen' }).first().click();
 	await expect(page.getByText(/wurde gelöscht/)).toBeVisible();
 	await page.getByRole('button', { name: 'Rückgängig' }).click();
-	await expect(page.getByRole('tab', { name: /Kommend 1/ })).toBeVisible();
+	await expect(page.getByRole('link', { name: /Kommend 1/ })).toBeVisible();
+});
+
+test('a successful login clears earlier failed attempts', async ({ page }) => {
+	// 4 + 4 failures would exceed the limit of 5 if the successful login in between did not reset it.
+	for (const round of [1, 2]) {
+		for (let i = 0; i < 4; i++) {
+			await page.goto('/admin/login');
+			await page.getByLabel('Passwort').fill(`wrong ${round}.${i}`);
+			await page.getByRole('button', { name: 'Anmelden' }).click();
+			await expect(page.getByRole('alert')).toContainText('stimmt nicht');
+		}
+		await login(page);
+		await page.context().clearCookies();
+	}
 });
 
 test('logging out ends the session', async ({ page }) => {

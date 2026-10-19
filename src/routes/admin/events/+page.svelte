@@ -1,17 +1,18 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { keepFocus } from '$lib/admin/form-helpers';
 	import { formatEventDate, formatEventTime } from '$lib/events/format';
 	import type { EventRow } from '$lib/server/db/schema';
 
 	let { data, form } = $props();
 
-	const tabs = $derived([
-		{ id: 'upcoming', label: 'Kommend', events: data.upcoming },
-		{ id: 'drafts', label: 'Entwürfe', events: data.drafts },
-		{ id: 'past', label: 'Vergangen', events: data.past }
+	const views = $derived([
+		{ id: 'kommend', label: 'Kommend', events: data.upcoming },
+		{ id: 'entwuerfe', label: 'Entwürfe', events: data.drafts },
+		{ id: 'vergangen', label: 'Vergangen', events: data.past }
 	]);
 
-	let active = $state('upcoming');
+	const current = $derived(views.find((view) => view.id === data.view)!);
 
 	const STATUS_LABEL: Record<EventRow['status'], string> = {
 		scheduled: '',
@@ -34,75 +35,64 @@
 </div>
 
 {#if deletedEvent}
-	<form class="notice undo" method="POST" action="?/restore" use:enhance>
+	<form class="notice undo" method="POST" action="?/restore" use:enhance={keepFocus}>
 		<input type="hidden" name="id" value={deletedEvent.id} />
-		<span>«{deletedEvent.title}» wurde gelöscht.</span>
-		<button class="btn secondary" type="submit">Rückgängig</button>
+		<span role="status">«{deletedEvent.title}» wurde gelöscht.</span>
+		<button class="btn secondary" type="submit" data-focus-fallback>Rückgängig</button>
 	</form>
 {/if}
 
-<div class="tabs" role="tablist" aria-label="Konzerte filtern">
-	{#each tabs as tab (tab.id)}
-		<button
-			type="button"
-			role="tab"
-			id="tab-{tab.id}"
-			aria-selected={active === tab.id}
-			aria-controls="panel-{tab.id}"
-			onclick={() => (active = tab.id)}
+<!-- Links, not tabs: the view survives reloads and form submissions without JavaScript. -->
+<nav class="views" aria-label="Konzerte filtern">
+	{#each views as view (view.id)}
+		<a
+			href="?view={view.id}"
+			aria-current={view.id === data.view ? 'page' : undefined}
+			data-sveltekit-noscroll
 		>
-			{tab.label} <span class="count">{tab.events.length}</span>
-		</button>
+			{view.label} <span class="count">{view.events.length}</span>
+		</a>
 	{/each}
-</div>
+</nav>
 
-{#each tabs as tab (tab.id)}
-	<div
-		role="tabpanel"
-		id="panel-{tab.id}"
-		aria-labelledby="tab-{tab.id}"
-		hidden={active !== tab.id}
-	>
-		{#if tab.events.length === 0}
-			<p class="empty">Keine Konzerte.</p>
-		{:else}
-			<ul class="list">
-				{#each tab.events as event (event.id)}
-					<li>
-						<div class="info">
-							<a href="/admin/events/{event.id}" class="title">{event.title}</a>
-							<span class="meta">
-								{formatEventDate(event.startsAt, 'de-ch', event.timezone)},
-								{formatEventTime(event.startsAt, 'de-ch', event.timezone)} – {event.venueName}, {event.city}
-							</span>
-							{#if STATUS_LABEL[event.status]}
-								<span class="status">{STATUS_LABEL[event.status]}</span>
-							{/if}
-						</div>
-						<div class="row-actions">
-							<a class="btn secondary" href="/admin/events/{event.id}">Bearbeiten</a>
-							<form method="POST" use:enhance>
-								<input type="hidden" name="id" value={event.id} />
-								{#if event.published}
-									<button class="btn secondary" formaction="?/unpublish">Verbergen</button>
-								{:else}
-									<button class="btn" formaction="?/publish">Veröffentlichen</button>
-								{/if}
-								{#if event.status === 'cancelled'}
-									<button class="btn secondary" formaction="?/reinstate">Findet doch statt</button>
-								{:else}
-									<button class="btn secondary" formaction="?/cancel">Absagen</button>
-								{/if}
-								<button class="btn secondary" formaction="?/duplicate">Duplizieren</button>
-								<button class="btn danger" formaction="?/delete">Löschen</button>
-							</form>
-						</div>
-					</li>
-				{/each}
-			</ul>
-		{/if}
-	</div>
-{/each}
+{#if current.events.length === 0}
+	<p class="empty">Keine Konzerte.</p>
+{:else}
+	<ul class="list">
+		{#each current.events as event (event.id)}
+			<li>
+				<div class="info">
+					<a href="/admin/events/{event.id}" class="title">{event.title}</a>
+					<span class="meta">
+						{formatEventDate(event.startsAt, 'de-ch', event.timezone)},
+						{formatEventTime(event.startsAt, 'de-ch', event.timezone)} – {event.venueName}, {event.city}
+					</span>
+					{#if STATUS_LABEL[event.status]}
+						<span class="status">{STATUS_LABEL[event.status]}</span>
+					{/if}
+				</div>
+				<div class="row-actions">
+					<a class="btn secondary" href="/admin/events/{event.id}">Bearbeiten</a>
+					<form method="POST" use:enhance={keepFocus}>
+						<input type="hidden" name="id" value={event.id} />
+						{#if event.published}
+							<button class="btn secondary" formaction="?/unpublish">Verbergen</button>
+						{:else}
+							<button class="btn" formaction="?/publish">Veröffentlichen</button>
+						{/if}
+						{#if event.status === 'cancelled'}
+							<button class="btn secondary" formaction="?/reinstate">Findet doch statt</button>
+						{:else}
+							<button class="btn secondary" formaction="?/cancel">Absagen</button>
+						{/if}
+						<button class="btn secondary" formaction="?/duplicate">Duplizieren</button>
+						<button class="btn danger" formaction="?/delete">Löschen</button>
+					</form>
+				</div>
+			</li>
+		{/each}
+	</ul>
+{/if}
 
 <style>
 	.head {
@@ -121,22 +111,22 @@
 		gap: var(--space-3);
 	}
 
-	.tabs {
+	.views {
 		display: flex;
+		flex-wrap: wrap;
 		gap: var(--space-2);
 		margin-bottom: var(--space-6);
 		border-bottom: 1px solid var(--line);
 	}
 
-	[role='tab'] {
+	.views a {
 		padding: var(--space-3) var(--space-4);
-		background: none;
-		border: 0;
 		border-bottom: 3px solid transparent;
-		cursor: pointer;
+		color: var(--text);
+		text-decoration: none;
 	}
 
-	[role='tab'][aria-selected='true'] {
+	.views a[aria-current='page'] {
 		border-bottom-color: var(--accent);
 		font-weight: 700;
 	}

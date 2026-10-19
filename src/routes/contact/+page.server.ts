@@ -8,7 +8,7 @@ import {
 } from '$lib/contact/form';
 import { getLocale } from '$lib/paraglide/runtime';
 import { sendMail } from '$lib/server/mail';
-import { recordDelivery, storeMessage } from '$lib/server/messages';
+import { purgeOldMessages, recordDelivery, storeMessage } from '$lib/server/messages';
 import { hashIp, hit } from '$lib/server/rate-limit';
 import { verifyTurnstile } from '$lib/server/turnstile';
 import type { Actions, PageServerLoad } from './$types';
@@ -82,6 +82,8 @@ export const actions: Actions = {
 			replyTo: message.email
 		});
 		await recordDelivery(row.id, error);
+		// Keeps the twelve-month promise even if nobody opens the admin inbox.
+		await purgeOldMessages();
 
 		return { sent: true };
 	}

@@ -1,11 +1,13 @@
 import { json } from '@sveltejs/kit';
 import { assertAdmin } from '$lib/server/auth';
 import { getDb, schema } from '$lib/server/db';
+import { purgeOldMessages } from '$lib/server/messages';
 import type { RequestHandler } from './$types';
 
 /** A full content backup. Sessions and rate-limit counters are left out on purpose. */
 export const GET: RequestHandler = async ({ locals }) => {
 	assertAdmin(locals);
+	await purgeOldMessages();
 	const db = await getDb();
 	const [events, media, videos, releases, messages] = await Promise.all([
 		db.select().from(schema.event),

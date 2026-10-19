@@ -29,7 +29,8 @@
 	<ul class="list">
 		{#each data.messages as message (message.id)}
 			<li class:unread={message.status === 'new'}>
-				<a href="/admin/messages/{message.id}">
+				<!-- No preloading: opening a message marks it read, hovering must not. -->
+				<a href="/admin/messages/{message.id}" data-sveltekit-preload-data="off">
 					<span class="from">
 						{#if message.status === 'new'}<span class="dot">Neu</span>{/if}
 						{message.name}

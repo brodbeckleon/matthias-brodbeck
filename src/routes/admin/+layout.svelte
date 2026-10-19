@@ -43,7 +43,7 @@
 			{/if}
 		</div>
 	</header>
-	<main id="main">
+	<main id="main" tabindex="-1">
 		{@render children()}
 	</main>
 </div>
@@ -77,7 +77,9 @@
 
 	nav {
 		display: flex;
-		gap: var(--space-4);
+		flex-wrap: wrap;
+		gap: var(--space-1) var(--space-4);
+		min-width: 0;
 	}
 
 	nav a {
@@ -105,6 +107,10 @@
 		border: 1px solid var(--line);
 		border-radius: var(--radius);
 		cursor: pointer;
+	}
+
+	main:focus {
+		outline: none;
 	}
 
 	main {

@@ -45,7 +45,7 @@ test('videos and releases appear on the music page, loading nothing external unt
 	await page.goto('/music');
 	await expect(page.getByRole('heading', { name: 'Saitenschlag live im Moods' })).toBeVisible();
 	await expect(page.getByText('2021')).toBeVisible();
-	await expect(page.getByText('Plays drums, percussion')).toBeVisible();
+	await expect(page.getByText('drums, percussion')).toBeVisible();
 	await expect(page.getByRole('link', { name: /Bandcamp/ })).toHaveAttribute(
 		'href',
 		'https://saitenschlag.bandcamp.com/album/x'

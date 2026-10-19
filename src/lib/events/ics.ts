@@ -11,6 +11,12 @@ type IcsEvent = {
 	updatedAt: Date;
 };
 
+const ICS_STATUS = {
+	scheduled: 'CONFIRMED',
+	postponed: 'TENTATIVE',
+	cancelled: 'CANCELLED'
+} as const;
+
 const DEFAULT_DURATION_MS = 2 * 60 * 60 * 1000;
 
 function stamp(date: Date): string {
@@ -51,7 +57,7 @@ export function eventToIcs(event: IcsEvent, url: string, host: string): string {
 		`SUMMARY:${escape(`${event.title} – Matthias Brodbeck`)}`,
 		`LOCATION:${escape(location)}`,
 		`URL:${url}`,
-		`STATUS:${event.status === 'cancelled' ? 'CANCELLED' : 'CONFIRMED'}`,
+		`STATUS:${ICS_STATUS[event.status]}`,
 		'END:VEVENT',
 		'END:VCALENDAR',
 		''

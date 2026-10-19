@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isTimeZone, zonedToUtc } from './time';
+import { isTimeZone, nextDay, zonedToUtc } from './time';
 
 // Admin-only, so validation messages are German.
 const optionalText = (max: number) =>
@@ -89,8 +89,11 @@ export function parseEventForm(formData: FormData) {
 	const data = result.data;
 	const startsAt = zonedToUtc(data.date, data.startTime, data.timezone);
 	let endsAt = data.endTime ? zonedToUtc(data.date, data.endTime, data.timezone) : null;
-	// An end time before the start means the concert runs past midnight.
-	if (endsAt && endsAt <= startsAt) endsAt = new Date(endsAt.getTime() + 24 * 60 * 60 * 1000);
+	// An end time before the start means the concert runs past midnight. The next calendar day is
+	// converted on its own, so a DST change that night does not shift the end by an hour.
+	if (endsAt && endsAt <= startsAt) {
+		endsAt = zonedToUtc(nextDay(data.date), data.endTime!, data.timezone);
+	}
 
 	return {
 		ok: true as const,

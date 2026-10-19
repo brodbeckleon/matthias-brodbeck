@@ -13,18 +13,18 @@ export function isTopic(value: unknown): value is ContactTopic {
  */
 export const contactSchema = z.object({
 	topic: z.enum(CONTACT_TOPICS).catch('other'),
-	name: z.string().trim().min(1, 'error_name_required').max(200, 'error_name_required'),
+	name: z.string().trim().min(1, 'error_name_required').max(200, 'error_too_long'),
 	email: z.string().trim().max(320, 'error_email_invalid').pipe(z.email('error_email_invalid')),
 	message: z.string().trim().min(1, 'error_message_required').max(5000, 'error_message_too_long'),
 	eventDate: z
 		.string()
 		.trim()
-		.max(100)
+		.max(100, 'error_too_long')
 		.transform((value) => value || null),
 	eventLocation: z
 		.string()
 		.trim()
-		.max(200)
+		.max(200, 'error_too_long')
 		.transform((value) => value || null)
 });
 
@@ -34,5 +34,6 @@ export type ContactErrorKey =
 	| 'error_email_invalid'
 	| 'error_message_required'
 	| 'error_message_too_long'
+	| 'error_too_long'
 	| 'error_too_many'
 	| 'error_captcha';

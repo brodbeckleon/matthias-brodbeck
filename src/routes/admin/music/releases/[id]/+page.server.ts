@@ -2,6 +2,7 @@ import { error, fail, redirect } from '@sveltejs/kit';
 import { parseReleaseForm, type ReleaseFormValues } from '$lib/music/release-form';
 import { assertAdmin } from '$lib/server/auth';
 import { deleteRelease, getRelease, updateRelease } from '$lib/server/music';
+import { getMedia } from '$lib/server/media';
 import { photoOptions } from '$lib/server/photo-options';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -33,6 +34,13 @@ export const actions: Actions = {
 		const release = await find(params.id);
 		const parsed = parseReleaseForm(await request.formData());
 		if (!parsed.ok) return fail(400, { values: parsed.values, errors: parsed.errors });
+		// The photo may have been deleted in another tab since the form was opened.
+		if (parsed.release.coverMediaId && !(await getMedia(parsed.release.coverMediaId))) {
+			return fail(400, {
+				values: { ...parsed.values, coverMediaId: '' },
+				errors: { coverMediaId: 'Dieses Foto gibt es nicht mehr. Bitte ein anderes wählen.' }
+			});
+		}
 		await updateRelease(release.id, parsed.release);
 		redirect(303, '/admin/music');
 	},

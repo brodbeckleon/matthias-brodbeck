@@ -5,12 +5,15 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import Button from '$lib/components/ui/Button.svelte';
 	import EmptyState from '$lib/components/ui/EmptyState.svelte';
+	import { utcToZoned } from '$lib/events/time';
 
 	let { data } = $props();
 
 	const pastByYear = $derived(
 		Object.entries(
-			Object.groupBy(data.past, (event) => String(event.startsAt.getUTCFullYear()))
+			Object.groupBy(data.past, (event) =>
+				utcToZoned(event.startsAt, event.timezone).date.slice(0, 4)
+			)
 		).sort(([a], [b]) => Number(b) - Number(a))
 	);
 </script>

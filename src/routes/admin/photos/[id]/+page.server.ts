@@ -30,7 +30,17 @@ export const actions: Actions = {
 		const published = data.get('published') === 'on';
 		// Screen-reader users need a description; it is required before a photo goes public.
 		if (published && !alt['de-ch']) {
-			return fail(400, { error: 'Bitte zuerst eine deutsche Bildbeschreibung eingeben.' });
+			return fail(400, {
+				error: 'Bitte zuerst eine deutsche Bildbeschreibung eingeben.',
+				field: 'altDe',
+				values: {
+					altDe: alt['de-ch'],
+					altEn: alt.en,
+					altJa: alt.ja,
+					credit: text(data.get('credit'), 200),
+					published
+				}
+			});
 		}
 		await updateMedia(photo.id, {
 			alt: Object.fromEntries(Object.entries(alt).filter(([, value]) => value)),

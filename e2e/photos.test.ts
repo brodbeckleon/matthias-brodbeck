@@ -8,13 +8,24 @@ async function login(page: Page) {
 	await page.getByRole('button', { name: 'Anmelden' }).click();
 }
 
-test('uploads are rejected without a session', async ({ request, baseURL }) => {
+test('uploads are rejected without a session, with a 401 rather than a redirect', async ({
+	request,
+	baseURL
+}) => {
 	const response = await request.post('/admin/api/upload', {
 		multipart: { width: '10', height: '10' },
 		headers: { origin: baseURL! },
 		maxRedirects: 0
 	});
-	expect(response.status()).toBe(303);
+	expect(response.status()).toBe(401);
+});
+
+test('an upload after the session ended is reported, not shown as done', async ({ page }) => {
+	await login(page);
+	await page.goto('/admin/photos');
+	await page.context().clearCookies();
+	await page.locator('#files').setInputFiles('static/og-default.png');
+	await expect(page.locator('.progress li')).toContainText('Nicht mehr angemeldet');
 });
 
 test('files that are not WebP or JPEG are refused', async ({ page, baseURL }) => {
@@ -88,6 +99,7 @@ test('deleting a photo removes the file', async ({ page }) => {
 	await page.goto('/admin/photos');
 	const src = await page.locator('.grid img').first().getAttribute('src');
 	await page.getByRole('link', { name: 'Bearbeiten' }).first().click();
+	page.once('dialog', (dialog) => dialog.accept());
 	await page.getByRole('button', { name: 'Foto löschen' }).click();
 	await expect(page.getByText('Noch keine Fotos.')).toBeVisible();
 	expect((await page.request.get(src!)).status()).toBe(404);

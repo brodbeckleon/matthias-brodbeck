@@ -29,6 +29,10 @@ const handleAdmin: Handle = async ({ event, resolve }) => {
 	event.locals.admin = await validateSession(event.cookies);
 
 	if (!event.locals.admin && event.route.id !== '/admin/login') {
+		// fetch() follows redirects silently, so API callers get a plain 401 instead.
+		if (event.route.id.startsWith('/admin/api/')) {
+			return new Response('Nicht angemeldet', { status: 401 });
+		}
 		return new Response(null, { status: 303, headers: { location: '/admin/login' } });
 	}
 

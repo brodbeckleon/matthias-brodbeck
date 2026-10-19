@@ -86,7 +86,7 @@
 		</div>
 
 		<div class="row">
-			{#each [{ field: 'name', type: 'text', autocomplete: 'name', label: m.form_name() }, { field: 'email', type: 'email', autocomplete: 'email', label: m.form_email() }] as const as input (input.field)}
+			{#each [{ field: 'name', type: 'text', autocomplete: 'name', label: m.form_name(), max: 200 }, { field: 'email', type: 'email', autocomplete: 'email', label: m.form_email(), max: 320 }] as const as input (input.field)}
 				<div class="field">
 					<label for={input.field}>{input.label}</label>
 					<input
@@ -95,6 +95,7 @@
 						type={input.type}
 						autocomplete={input.autocomplete}
 						value={form?.values?.[input.field] ?? ''}
+						maxlength={input.max}
 						required
 						aria-invalid={errors[input.field] ? 'true' : undefined}
 						aria-describedby={describedBy(input.field)}
@@ -108,24 +109,22 @@
 
 		<!-- Shown for bookings only, by CSS, so it also works without JavaScript. -->
 		<div class="row booking">
-			<div class="field">
-				<label for="eventDate">{m.form_event_date()}</label>
-				<input
-					id="eventDate"
-					name="eventDate"
-					value={form?.values?.eventDate ?? ''}
-					aria-describedby="booking-hint"
-				/>
-			</div>
-			<div class="field">
-				<label for="eventLocation">{m.form_event_location()}</label>
-				<input
-					id="eventLocation"
-					name="eventLocation"
-					value={form?.values?.eventLocation ?? ''}
-					aria-describedby="booking-hint"
-				/>
-			</div>
+			{#each [{ field: 'eventDate', label: m.form_event_date(), max: 100 }, { field: 'eventLocation', label: m.form_event_location(), max: 200 }] as const as input (input.field)}
+				<div class="field">
+					<label for={input.field}>{input.label}</label>
+					<input
+						id={input.field}
+						name={input.field}
+						value={form?.values?.[input.field] ?? ''}
+						maxlength={input.max}
+						aria-invalid={errors[input.field] ? 'true' : undefined}
+						aria-describedby={describedBy(input.field, 'booking-hint')}
+					/>
+					{#if errors[input.field]}
+						<p class="error" id="{input.field}-error">{text(errors[input.field]!)}</p>
+					{/if}
+				</div>
+			{/each}
 			<p class="hint" id="booking-hint">{m.form_booking_hint()}</p>
 		</div>
 
@@ -135,6 +134,7 @@
 				id="message"
 				name="message"
 				rows="8"
+				maxlength="5000"
 				required
 				aria-invalid={errors.message ? 'true' : undefined}
 				aria-describedby={describedBy('message')}>{form?.values?.message ?? ''}</textarea
@@ -151,6 +151,7 @@
 		</div>
 
 		{#if turnstileSiteKey}
+			<noscript><p class="summary">{m.form_needs_js()}</p></noscript>
 			<div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-language={getLocale()}></div>
 		{/if}
 

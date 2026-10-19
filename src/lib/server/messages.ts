@@ -1,4 +1,4 @@
-import { and, desc, eq, lt, ne } from 'drizzle-orm';
+import { desc, eq, lt, ne } from 'drizzle-orm';
 import { getDb, schema } from './db';
 import type { ContactMessageRow } from './db/schema';
 
@@ -61,5 +61,5 @@ export async function purgeOldMessages(now = new Date()): Promise<void> {
 	const db = await getDb();
 	const cutoff = new Date(now);
 	cutoff.setFullYear(cutoff.getFullYear() - 1);
-	await db.delete(contactMessage).where(and(lt(contactMessage.createdAt, cutoff)));
+	await db.delete(contactMessage).where(lt(contactMessage.createdAt, cutoff));
 }

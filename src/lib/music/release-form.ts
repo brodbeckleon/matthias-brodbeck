@@ -57,6 +57,11 @@ export function parseReleaseForm(data: FormData) {
 		errors.links = 'Jede Zeile braucht eine Adresse mit https://, z. B. «Bandcamp | https://…».';
 	}
 
+	const coverMediaId = values.coverMediaId ? Number(values.coverMediaId) : null;
+	if (coverMediaId !== null && !Number.isInteger(coverMediaId)) {
+		errors.coverMediaId = 'Ungültige Auswahl.';
+	}
+
 	const embedUrl = values.embed ? parseEmbedUrl(values.embed) : null;
 	if (values.embed && !embedUrl) {
 		errors.embed = 'Nur Player von Bandcamp oder SoundCloud (den «Einbetten»-Code) einfügen.';
@@ -73,7 +78,7 @@ export function parseReleaseForm(data: FormData) {
 			year,
 			label: values.label.slice(0, 200) || null,
 			role: values.role.slice(0, 200) || null,
-			coverMediaId: values.coverMediaId ? Number(values.coverMediaId) : null,
+			coverMediaId,
 			links: links.slice(0, 10),
 			embedUrl,
 			published: values.published === 'on'

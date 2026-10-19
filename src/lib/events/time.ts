@@ -17,6 +17,12 @@ export function utcToZoned(instant: Date, timeZone: string): { date: string; tim
 	};
 }
 
+/** "2026-03-28" → "2026-03-29", independent of time zones. */
+export function nextDay(date: string): string {
+	const [year, month, day] = date.split('-').map(Number);
+	return new Date(Date.UTC(year, month - 1, day + 1)).toISOString().slice(0, 10);
+}
+
 export function isTimeZone(value: string): boolean {
 	try {
 		new Intl.DateTimeFormat('en', { timeZone: value });

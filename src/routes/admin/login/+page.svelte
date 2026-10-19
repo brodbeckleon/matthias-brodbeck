@@ -11,7 +11,7 @@
 
 	{#if !data.configured}
 		<p class="notice">
-			Es ist noch kein Passwort eingerichtet. Siehe README, Abschnitt «Admin-Passwort».
+			Es ist noch kein Passwort eingerichtet. Siehe README, Abschnitt «Admin password».
 		</p>
 	{/if}
 

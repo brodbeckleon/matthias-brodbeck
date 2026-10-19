@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { confirmDelete } from '$lib/admin/form-helpers';
 	import ReleaseForm from '$lib/components/admin/ReleaseForm.svelte';
 
 	let { data, form } = $props();
@@ -18,7 +19,11 @@
 />
 
 <form method="POST" action="?/delete" class="delete">
-	<button class="btn danger" type="submit">Aufnahme löschen</button>
+	<button
+		class="btn danger"
+		type="submit"
+		onclick={confirmDelete('Diese Aufnahme endgültig löschen?')}>Aufnahme löschen</button
+	>
 </form>
 
 <style>

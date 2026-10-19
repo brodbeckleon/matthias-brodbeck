@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { invalidateAll } from '$app/navigation';
+	import { keepFocus } from '$lib/admin/form-helpers';
 	import { resizeImage } from '$lib/client/resize-image';
 
 	let { data } = $props();
@@ -22,6 +23,15 @@
 				body.set('width', String(resized.width));
 				body.set('height', String(resized.height));
 				const response = await fetch('/admin/api/upload', { method: 'POST', body });
+				if (response.status === 401) {
+					// Stop here and stay on the page: reloading the data would jump to the login form
+					// and hide this message.
+					const message = 'Nicht mehr angemeldet. Bitte neu anmelden und erneut hochladen.';
+					uploads = uploads.map((item, j) =>
+						j >= i ? { ...item, status: 'error', message } : item
+					);
+					return;
+				}
 				if (!response.ok) {
 					const { message } = await response.json().catch(() => ({ message: '' }));
 					throw new Error(message || `Fehler ${response.status}`);
@@ -74,7 +84,8 @@
 	<ul class="grid">
 		{#each data.photos as photo, i (photo.id)}
 			<li>
-				<a href="/admin/photos/{photo.id}">
+				<!-- The "Bearbeiten" link below names the action; this one is a mouse shortcut. -->
+				<a href="/admin/photos/{photo.id}" tabindex="-1" aria-hidden="true">
 					<img
 						src={photo.url}
 						alt={photo.alt['de-ch'] ?? ''}
@@ -89,7 +100,7 @@
 					</span>
 					{#if !photo.alt['de-ch']}<span class="warn">Beschreibung fehlt</span>{/if}
 				</div>
-				<form method="POST" action="?/move" use:enhance class="order">
+				<form method="POST" action="?/move" use:enhance={keepFocus} class="order">
 					<input type="hidden" name="id" value={photo.id} />
 					<button
 						class="btn secondary"
@@ -131,7 +142,6 @@
 		opacity: 0;
 	}
 
-	#files:focus-visible + .hint,
 	.upload:has(#files:focus-visible) label {
 		outline: 2px solid var(--accent-ink);
 		outline-offset: 3px;

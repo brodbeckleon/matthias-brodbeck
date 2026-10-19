@@ -14,6 +14,12 @@ export default defineConfig({
 			PGLITE_DIR: '.data/e2e',
 			UPLOAD_DIR: '.data/e2e-uploads',
 			BLOB_READ_WRITE_TOKEN: '',
+			// Keep a developer's real keys in .env out of the tests.
+			RESEND_API_KEY: '',
+			CONTACT_TO_EMAIL: '',
+			CONTACT_FROM_EMAIL: '',
+			TURNSTILE_SECRET_KEY: '',
+			PUBLIC_TURNSTILE_SITE_KEY: '',
 			IP_HASH_SALT: 'e2e',
 			// Hash of the test-only password "e2e-test-password".
 			ADMIN_PASSWORD_HASH:

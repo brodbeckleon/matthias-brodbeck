@@ -8,8 +8,8 @@
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"check": "svelte-kit sync && npm run paraglide && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && npm run paraglide && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest run",
@@ -17,7 +17,8 @@
 		"test": "npm run test:unit && npm run test:e2e",
 		"admin:hash": "node scripts/hash-password.ts",
 		"db:generate": "drizzle-kit generate",
-		"db:migrate": "drizzle-kit migrate"
+		"db:migrate": "drizzle-kit migrate",
+		"paraglide": "paraglide-js compile --project ./project.inlang --outdir ./src/lib/paraglide --strategy url baseLocale --silent"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "^4.14.0",
@@ -55,6 +56,6 @@
 		"zod": "^4.1.13"
 	},
 	"engines": {
-		"node": ">=22"
+		"node": ">=22.18"
 	}
 }

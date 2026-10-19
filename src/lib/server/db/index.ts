@@ -25,8 +25,8 @@ async function connect(): Promise<Db> {
 	const { drizzle } = await import('drizzle-orm/pglite');
 	const { migrate } = await import('drizzle-orm/pglite/migrator');
 	const dir = env.PGLITE_DIR || '.data/pglite';
-	// PGlite only creates the last path segment itself.
-	mkdirSync(dirname(dir), { recursive: true });
+	// PGlite only creates the last path segment itself. "memory://" keeps tests off the disk.
+	if (!dir.startsWith('memory://')) mkdirSync(dirname(dir), { recursive: true });
 	const client = new PGlite(dir);
 	const db = drizzle(client, { schema });
 	await migrate(db, { migrationsFolder: 'drizzle' });

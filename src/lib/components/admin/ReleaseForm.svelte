@@ -47,7 +47,8 @@
 			id="coverMediaId"
 			name="coverMediaId"
 			value={values.coverMediaId}
-			aria-describedby="cover-hint"
+			aria-invalid={errors.coverMediaId ? 'true' : undefined}
+			aria-describedby="cover-hint{errors.coverMediaId ? ' cover-error' : ''}"
 		>
 			<option value="">Kein Cover</option>
 			{#each photos as photo (photo.id)}
@@ -55,6 +56,7 @@
 			{/each}
 		</select>
 		<p class="hint" id="cover-hint">Das Cover zuerst unter «Fotos» hochladen.</p>
+		{#if errors.coverMediaId}<p class="error" id="cover-error">{errors.coverMediaId}</p>{/if}
 	</div>
 
 	<div class="field">

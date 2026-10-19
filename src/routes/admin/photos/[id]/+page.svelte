@@ -1,7 +1,19 @@
 <script lang="ts">
+	import { confirmDelete } from '$lib/admin/form-helpers';
+
 	let { data, form } = $props();
 
 	const photo = $derived(data.photo);
+	// After a failed save, show what was typed rather than what is stored.
+	const values = $derived(
+		form?.values ?? {
+			altDe: photo.alt['de-ch'] ?? '',
+			altEn: photo.alt.en ?? '',
+			altJa: photo.alt.ja ?? '',
+			credit: photo.credit ?? '',
+			published: photo.published
+		}
+	);
 </script>
 
 <svelte:head>
@@ -10,10 +22,6 @@
 
 <p><a href="/admin/photos">Alle Fotos</a></p>
 <h1>Foto bearbeiten</h1>
-
-{#if form?.error}
-	<p class="form-error" role="alert">{form.error}</p>
-{/if}
 
 <div class="layout">
 	<img src={photo.url} alt={photo.alt['de-ch'] ?? ''} width={photo.width} height={photo.height} />
@@ -26,22 +34,32 @@
 			</p>
 			<div class="field">
 				<label for="altDe">Bildbeschreibung Deutsch *</label>
-				<input id="altDe" name="altDe" value={photo.alt['de-ch'] ?? ''} lang="de-CH" />
+				<input
+					id="altDe"
+					name="altDe"
+					value={values.altDe}
+					lang="de-CH"
+					aria-invalid={form?.field === 'altDe' ? 'true' : undefined}
+					aria-describedby={form?.field === 'altDe' ? 'altDe-error' : undefined}
+				/>
+				{#if form?.field === 'altDe'}<p class="error" id="altDe-error" role="alert">
+						{form.error}
+					</p>{/if}
 			</div>
 			<div class="field">
 				<label for="altEn">Bildbeschreibung Englisch</label>
-				<input id="altEn" name="altEn" value={photo.alt.en ?? ''} lang="en" />
+				<input id="altEn" name="altEn" value={values.altEn} lang="en" />
 			</div>
 			<div class="field">
 				<label for="altJa">Bildbeschreibung Japanisch</label>
-				<input id="altJa" name="altJa" value={photo.alt.ja ?? ''} lang="ja" />
+				<input id="altJa" name="altJa" value={values.altJa} lang="ja" />
 			</div>
 			<div class="field">
 				<label for="credit">Foto von</label>
-				<input id="credit" name="credit" value={photo.credit ?? ''} />
+				<input id="credit" name="credit" value={values.credit} />
 			</div>
 			<label class="check">
-				<input type="checkbox" name="published" checked={photo.published} />
+				<input type="checkbox" name="published" checked={values.published} />
 				In der Galerie zeigen
 			</label>
 			<div class="actions">
@@ -53,8 +71,15 @@
 			<button class="btn secondary" formaction="?/portrait" disabled={!photo.published}>
 				{photo.portrait ? 'Nicht mehr als Porträt verwenden' : 'Als Porträt auf der Startseite'}
 			</button>
-			<button class="btn danger" formaction="?/delete">Foto löschen</button>
+			<button
+				class="btn danger"
+				formaction="?/delete"
+				onclick={confirmDelete('Dieses Foto endgültig löschen?')}>Foto löschen</button
+			>
 		</form>
+		{#if form?.error && form.field !== 'altDe'}
+			<p class="form-error" role="alert">{form.error}</p>
+		{/if}
 	</div>
 </div>
 

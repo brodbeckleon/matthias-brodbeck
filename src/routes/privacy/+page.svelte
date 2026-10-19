@@ -7,6 +7,7 @@
 		{ heading: m.privacy_hosting_heading(), text: m.privacy_hosting() },
 		{ heading: m.privacy_storage_heading(), text: m.privacy_storage() },
 		{ heading: m.privacy_links_heading(), text: m.privacy_links() },
+		{ heading: m.privacy_embeds_heading(), text: m.privacy_embeds() },
 		{ heading: m.privacy_form_heading(), text: m.privacy_form() },
 		{ heading: m.privacy_email_heading(), text: m.privacy_email() }
 	];

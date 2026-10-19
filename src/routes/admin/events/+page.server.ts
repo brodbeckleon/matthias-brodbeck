@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 import { assertAdmin } from '$lib/server/auth';
 import {
 	duplicateEvent,
@@ -10,13 +10,18 @@ import {
 } from '$lib/server/events';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async () => {
+const VIEWS = ['kommend', 'entwuerfe', 'vergangen'] as const;
+
+export const load: PageServerLoad = async ({ url }) => {
+	const requested = url.searchParams.get('view');
+	const view = VIEWS.find((v) => v === requested) ?? 'kommend';
 	const now = Date.now();
 	const events = await listForAdmin();
 	// Admin view: an event counts as past once its start day is over.
 	const isPast = (e: (typeof events)[number]) =>
 		(e.endsAt ?? new Date(e.startsAt.getTime() + 6 * 60 * 60 * 1000)).getTime() < now;
 	return {
+		view,
 		upcoming: events.filter((e) => e.published && !isPast(e)),
 		drafts: events.filter((e) => !e.published),
 		past: events.filter((e) => e.published && isPast(e)).reverse(),
@@ -26,7 +31,8 @@ export const load: PageServerLoad = async () => {
 
 async function idFrom(request: Request) {
 	const id = Number((await request.formData()).get('id'));
-	if (!Number.isInteger(id)) throw fail(400, { error: 'Ungültige Anfrage.' });
+	// error() may be thrown from an action; fail() may only be returned.
+	if (!Number.isInteger(id)) error(400, 'Ungültige Anfrage.');
 	return id;
 }
 

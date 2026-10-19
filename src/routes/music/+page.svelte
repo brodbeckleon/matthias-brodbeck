@@ -74,7 +74,8 @@
 								? `, ${release.label}`
 								: ''}
 						</p>
-						{#if release.role}<p class="role">{m.release_role({ role: release.role })}</p>{/if}
+						<!-- Entered in German in the admin area. -->
+						{#if release.role}<p class="role" lang="de-CH">{release.role}</p>{/if}
 						{#if release.links.length}
 							<ul class="links">
 								{#each release.links as link (link.url)}

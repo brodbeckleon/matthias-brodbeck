@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { eventToIcs } from './ics';
 import { parseEventForm } from './form';
 import { eventSlug, uniqueSlug } from './slug';
-import { utcToZoned, zonedToUtc } from './time';
+import { nextDay, utcToZoned, zonedToUtc } from './time';
 import { pickLocale } from '../i18n/localized';
 
 describe('zonedToUtc', () => {
@@ -27,6 +27,13 @@ describe('zonedToUtc', () => {
 	it('round-trips through utcToZoned', () => {
 		const instant = zonedToUtc('2026-03-29', '19:30', 'Asia/Tokyo');
 		expect(utcToZoned(instant, 'Asia/Tokyo')).toEqual({ date: '2026-03-29', time: '19:30' });
+	});
+});
+
+describe('nextDay', () => {
+	it('crosses month and year ends', () => {
+		expect(nextDay('2026-02-28')).toBe('2026-03-01');
+		expect(nextDay('2026-12-31')).toBe('2027-01-01');
 	});
 });
 
@@ -68,6 +75,22 @@ describe('parseEventForm', () => {
 	it('moves an end time before the start to the next day', () => {
 		const result = parseEventForm(form({ startTime: '21:00', endTime: '01:00' }));
 		expect(result.ok && result.event.endsAt?.toISOString()).toBe('2026-11-15T00:00:00.000Z');
+	});
+
+	it('keeps the wall-clock end on the night clocks go forward', () => {
+		const result = parseEventForm(
+			form({ date: '2026-03-28', startTime: '22:00', endTime: '03:00' })
+		);
+		// 03:00 CEST on 29 March is 01:00 UTC.
+		expect(result.ok && result.event.endsAt?.toISOString()).toBe('2026-03-29T01:00:00.000Z');
+	});
+
+	it('keeps the wall-clock end on the night clocks go back', () => {
+		const result = parseEventForm(
+			form({ date: '2026-10-24', startTime: '22:00', endTime: '03:00' })
+		);
+		// 03:00 CET on 25 October is 02:00 UTC.
+		expect(result.ok && result.event.endsAt?.toISOString()).toBe('2026-10-25T02:00:00.000Z');
 	});
 
 	it('normalises the country code and empty optional fields', () => {
@@ -134,5 +157,25 @@ describe('eventToIcs', () => {
 		expect(ics).toContain('DTEND:20261114T210000Z');
 		expect(ics).toContain('STATUS:CANCELLED');
 		expect(ics).toContain('\r\n');
+	});
+
+	it('marks postponed events as tentative', () => {
+		const ics = eventToIcs(
+			{
+				slug: 's',
+				title: 'T',
+				startsAt: new Date('2026-11-14T19:00:00Z'),
+				endsAt: null,
+				status: 'postponed',
+				venueName: 'V',
+				street: null,
+				postalCode: null,
+				city: 'C',
+				updatedAt: new Date('2026-10-01T00:00:00Z')
+			},
+			'https://example.com/events/s',
+			'example.com'
+		);
+		expect(ics).toContain('STATUS:TENTATIVE');
 	});
 });

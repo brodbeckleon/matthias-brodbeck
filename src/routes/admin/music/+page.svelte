@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { confirmDelete, keepFocus } from '$lib/admin/form-helpers';
 
 	let { data, form } = $props();
 </script>
@@ -51,7 +52,7 @@
 						<strong>{video.title}</strong>
 						<span class="meta">{video.published ? 'Öffentlich' : 'Verborgen'}</span>
 					</div>
-					<form method="POST" use:enhance class="row-actions">
+					<form method="POST" use:enhance={keepFocus} class="row-actions">
 						<input type="hidden" name="id" value={video.id} />
 						<button
 							class="btn secondary"
@@ -74,7 +75,11 @@
 						{:else}
 							<button class="btn" formaction="?/publish">Veröffentlichen</button>
 						{/if}
-						<button class="btn danger" formaction="?/deleteVideo">Löschen</button>
+						<button
+							class="btn danger"
+							formaction="?/deleteVideo"
+							onclick={confirmDelete('Dieses Video von der Website entfernen?')}>Löschen</button
+						>
 					</form>
 				</li>
 			{/each}

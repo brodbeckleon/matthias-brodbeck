@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { confirmDelete } from '$lib/admin/form-helpers';
 	import { formatEventDate, formatEventTime } from '$lib/events/format';
 
 	let { data } = $props();
@@ -70,7 +71,11 @@
 		<button class="btn secondary" formaction="?/archive">Archivieren</button>
 	{/if}
 	<button class="btn secondary" formaction="?/unread">Als ungelesen markieren</button>
-	<button class="btn danger" formaction="?/delete">Löschen</button>
+	<button
+		class="btn danger"
+		formaction="?/delete"
+		onclick={confirmDelete('Diese Nachricht endgültig löschen?')}>Löschen</button
+	>
 </form>
 
 <style>

@@ -1,4 +1,4 @@
-import { asc, desc, eq, gt, lt, max } from 'drizzle-orm';
+import { asc, desc, eq, gt, lt, max, sql } from 'drizzle-orm';
 import { getDb, schema } from './db';
 import type { ReleaseRow, VideoRow } from './db/schema';
 import { deleteFile, putFile } from './storage';
@@ -111,7 +111,7 @@ export async function listReleases(publishedOnly: boolean): Promise<ReleaseWithC
 		.from(release)
 		.leftJoin(media, eq(release.coverMediaId, media.id))
 		.where(publishedOnly ? eq(release.published, true) : undefined)
-		.orderBy(desc(release.year), desc(release.id));
+		.orderBy(sql`${release.year} desc nulls last`, desc(release.id));
 	return rows.map((row) => ({ ...row.release, cover: row.cover?.url ? row.cover : null }));
 }
 

@@ -43,10 +43,16 @@
 {#snippet textarea(name: keyof EventFormValues, label: string, lang: string)}
 	<div class="field">
 		<label for={name}>{label}</label>
-		<textarea id={name} {name} rows="4" {lang} aria-invalid={errors[name] ? 'true' : undefined}
-			>{values[name]}</textarea
+		<textarea
+			id={name}
+			{name}
+			rows="4"
+			maxlength="4000"
+			{lang}
+			aria-invalid={errors[name] ? 'true' : undefined}
+			aria-describedby={errors[name] ? `${name}-error` : undefined}>{values[name]}</textarea
 		>
-		{#if errors[name]}<p class="error">{errors[name]}</p>{/if}
+		{#if errors[name]}<p class="error" id="{name}-error">{errors[name]}</p>{/if}
 	</div>
 {/snippet}
 
@@ -75,12 +81,18 @@
 		</div>
 		<div class="field">
 			<label for="timezone">Zeitzone</label>
-			<select id="timezone" name="timezone" value={values.timezone}>
+			<select
+				id="timezone"
+				name="timezone"
+				value={values.timezone}
+				aria-invalid={errors.timezone ? 'true' : undefined}
+				aria-describedby={errors.timezone ? 'timezone-error' : undefined}
+			>
 				{#each TIME_ZONES.includes(values.timezone) ? TIME_ZONES : [values.timezone, ...TIME_ZONES] as zone (zone)}
 					<option value={zone}>{zone}</option>
 				{/each}
 			</select>
-			{#if errors.timezone}<p class="error">{errors.timezone}</p>{/if}
+			{#if errors.timezone}<p class="error" id="timezone-error">{errors.timezone}</p>{/if}
 		</div>
 	</fieldset>
 
@@ -100,7 +112,8 @@
 	<fieldset>
 		<legend>Beschreibung</legend>
 		<p class="hint">
-			Deutsch genügt. Fehlt eine Übersetzung, zeigt die Website den deutschen Text.
+			Deutsch genügt. Fehlt eine Übersetzung, zeigt die Website den deutschen Text (auf Japanisch
+			zuerst den englischen, falls vorhanden).
 		</p>
 		{@render textarea('descriptionDe', 'Deutsch', 'de-CH')}
 		{@render textarea('descriptionEn', 'Englisch', 'en')}

@@ -14,8 +14,8 @@ Sie unter **/admin**, also zum Beispiel `https://ihre-domain.ch/admin`. Das geht
 1. **Konzerte → Neues Konzert**.
 2. Titel, Datum, Beginn, Lokal und Stadt sind Pflicht. Endet ein Konzert nach Mitternacht, einfach
    die Endzeit eintragen (z. B. 00:30) – das wird richtig verstanden.
-3. Die Beschreibung genügt auf Deutsch. Fehlt eine Übersetzung, zeigt die englische und japanische
-   Seite den deutschen Text.
+3. Die Beschreibung genügt auf Deutsch. Fehlt eine Übersetzung, zeigt die englische Seite den
+   deutschen Text; die japanische Seite zeigt den englischen, wenn es ihn gibt, sonst den deutschen.
 4. **Auf der Website anzeigen** ankreuzen, sobald das Konzert öffentlich sein soll. Ohne Häkchen
    bleibt es ein Entwurf.
 
