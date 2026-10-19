@@ -21,7 +21,7 @@
 		<li>{m.teaching_ask_3()}</li>
 	</ul>
 	<div>
-		<Button href={localizePath('/contact')}>{m.teaching_cta()}</Button>
+		<Button href={localizePath('/contact?topic=lessons')}>{m.teaching_cta()}</Button>
 	</div>
 </section>
 

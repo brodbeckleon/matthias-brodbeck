@@ -30,7 +30,7 @@
 	</section>
 {:else}
 	<EmptyState title={m.concerts_empty_title()} text={m.concerts_empty_text()}>
-		<Button href={localizePath('/contact')}>{m.cta_booking()}</Button>
+		<Button href={localizePath('/contact?topic=booking')}>{m.cta_booking()}</Button>
 	</EmptyState>
 {/if}
 

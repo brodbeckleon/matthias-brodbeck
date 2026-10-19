@@ -13,6 +13,10 @@
 		<strong>Konzerte verwalten</strong>
 		<span>Bearbeiten, veröffentlichen, absagen</span>
 	</a>
+	<a class="tile" href="/admin/messages">
+		<strong>Nachrichten</strong>
+		<span>Anfragen aus dem Kontaktformular</span>
+	</a>
 	<div class="tile pending">
 		<strong>Fotos</strong>
 		<span>Folgt bald</span>

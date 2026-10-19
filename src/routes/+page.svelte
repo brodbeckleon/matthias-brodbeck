@@ -31,7 +31,7 @@
 		<p class="role">{m.hero_role()}</p>
 		<RhythmGrid caption={m.rhythm_caption()} playLabel={m.rhythm_play()} />
 		<div class="actions">
-			<Button href={localizePath('/contact')}>{m.cta_booking()}</Button>
+			<Button href={localizePath('/contact?topic=booking')}>{m.cta_booking()}</Button>
 			<Button href={localizePath('/events')} variant="secondary">{m.cta_concerts()}</Button>
 		</div>
 	</div>

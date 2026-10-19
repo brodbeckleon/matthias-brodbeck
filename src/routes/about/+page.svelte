@@ -80,7 +80,9 @@
 			<blockquote>{m.bio_short()}</blockquote>
 		</figure>
 		<div>
-			<Button href={localizePath('/contact')} variant="secondary">{m.press_request()}</Button>
+			<Button href={localizePath('/contact?topic=press')} variant="secondary"
+				>{m.press_request()}</Button
+			>
 		</div>
 	</div>
 </section>

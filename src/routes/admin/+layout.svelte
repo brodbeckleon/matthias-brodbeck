@@ -3,10 +3,11 @@
 
 	let { data, children } = $props();
 
-	const links = [
+	const links = $derived([
 		{ href: '/admin', label: 'Übersicht' },
-		{ href: '/admin/events', label: 'Konzerte' }
-	];
+		{ href: '/admin/events', label: 'Konzerte' },
+		{ href: '/admin/messages', label: data.unread ? `Nachrichten (${data.unread})` : 'Nachrichten' }
+	]);
 
 	function isCurrent(href: string) {
 		const path = page.url.pathname;

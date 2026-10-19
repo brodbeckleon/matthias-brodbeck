@@ -62,5 +62,37 @@ export const event = pgTable(
 	(table) => [index('event_public_idx').on(table.published, table.startsAt)]
 );
 
+export const contactTopic = pgEnum('contact_topic', [
+	'booking',
+	'session',
+	'lessons',
+	'press',
+	'other'
+]);
+
+export const messageStatus = pgEnum('message_status', ['new', 'read', 'archived']);
+
+/** Contact form submissions. Kept for twelve months, then purged. */
+export const contactMessage = pgTable(
+	'contact_message',
+	{
+		id: serial('id').primaryKey(),
+		topic: contactTopic('topic').notNull(),
+		name: text('name').notNull(),
+		email: text('email').notNull(),
+		message: text('message').notNull(),
+		eventDate: text('event_date'),
+		eventLocation: text('event_location'),
+		locale: text('locale').notNull(),
+		ipHash: text('ip_hash').notNull(),
+		status: messageStatus('status').notNull().default('new'),
+		emailSentAt: timestamp('email_sent_at', { withTimezone: true }),
+		emailError: text('email_error'),
+		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
+	},
+	(table) => [index('contact_message_status_idx').on(table.status, table.createdAt)]
+);
+
 export type EventRow = typeof event.$inferSelect;
 export type NewEventRow = typeof event.$inferInsert;
+export type ContactMessageRow = typeof contactMessage.$inferSelect;
